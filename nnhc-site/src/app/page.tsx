@@ -245,20 +245,37 @@ export default function HomePage() {
                 </Reveal>
               </li>
             ))}
-          </ul>
 
-          <Reveal>
-            <div className="mt-20 md:mt-28 pt-10 border-t border-line flex flex-wrap items-baseline justify-between gap-6">
-              <p className="lede max-w-[42ch]">
-                These are four of many voices on file - read every contributor,
-                filtered by stakeholder group.
-              </p>
-              <Link href="/voices" className="btn btn-primary">
-                See all voices
-                <span className="btn-icon" aria-hidden>→</span>
-              </Link>
-            </div>
-          </Reveal>
+            {/* Coda - sits in the same rhythm as a testimony row */}
+            <li>
+              <Reveal delay={TESTIMONIALS.length * 60}>
+                <Link
+                  href="/voices"
+                  className="group block grid grid-cols-12 gap-6 md:gap-12 items-start"
+                >
+                  <div className="col-span-12 md:col-span-3">
+                    <div className="flex md:flex-col gap-4 md:gap-1 items-baseline md:items-start">
+                      <span aria-hidden className="hidden md:block h-px w-8 bg-line-strong mt-3" />
+                      <div>
+                        <p className="text-sm font-medium tracking-tight text-ink-soft transition-colors group-hover:text-electric inline-flex items-center gap-2">
+                          See all voices
+                          <span
+                            aria-hidden
+                            className="inline-block transition-transform group-hover:translate-x-1"
+                          >
+                            →
+                          </span>
+                        </p>
+                        <p className="text-xs text-ink-mute mt-0.5">
+                          Filtered by group
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+                </Link>
+              </Reveal>
+            </li>
+          </ul>
         </div>
       </section>
 
@@ -326,10 +343,8 @@ export default function HomePage() {
                   className="h-display mt-5"
                   style={{ fontSize: "clamp(2.4rem, 6vw, 5.2rem)" }}
                 >
-                  Read in{" "}
-                  <span className="h-italic">order</span>, or
-                  <br />
-                  land where you belong.
+                  Where would you like to{" "}
+                  <span className="h-italic">begin</span>?
                 </h2>
               </div>
             </div>
