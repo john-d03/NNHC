@@ -3,11 +3,13 @@
 import Link from "next/link";
 import { useEffect } from "react";
 
+const REDIRECT_DELAY_MS = 3000;
+
 export default function VisionRedirectPage() {
   useEffect(() => {
     const timeout = window.setTimeout(() => {
       window.location.replace("/model/");
-    }, 3000);
+    }, REDIRECT_DELAY_MS);
 
     return () => window.clearTimeout(timeout);
   }, []);
@@ -21,6 +23,11 @@ export default function VisionRedirectPage() {
           /model
         </Link>
         .
+      </p>
+      <p>
+        <Link className="underline" href="/model/">
+          Go now
+        </Link>
       </p>
     </main>
   );
