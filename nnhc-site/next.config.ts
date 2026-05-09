@@ -6,11 +6,6 @@ const nextConfig: NextConfig = {
   images: {
     unoptimized: true,
   },
-  async redirects() {
-    return [
-      { source: "/vision", destination: "/model", permanent: true },
-    ];
-  },
 };
 
 export default nextConfig;
