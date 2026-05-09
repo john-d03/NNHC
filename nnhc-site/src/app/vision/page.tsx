@@ -32,9 +32,13 @@ export default function VisionRedirectPage() {
         .
       </p>
       {autoRedirect ? (
-        <p>
-          You will be redirected automatically in 10 seconds.{" "}
-          <button className="cursor-pointer underline" onClick={() => setAutoRedirect(false)} type="button">
+        <p aria-live="polite">
+          You will be redirected automatically to /model in 10 seconds.{" "}
+          <button
+            className="cursor-pointer underline focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2"
+            onClick={() => setAutoRedirect(false)}
+            type="button"
+          >
             Cancel auto-redirect
           </button>
         </p>
