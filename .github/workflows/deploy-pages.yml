@@ -41,7 +41,12 @@ jobs:
         run: npm run build
 
       - name: Add CNAME
-        run: cp CNAME nnhc-site/out/CNAME
+        run: |
+          if [ -f CNAME ]; then
+            cp CNAME nnhc-site/out/CNAME
+          else
+            echo "CNAME not found at repository root; skipping."
+          fi
 
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3

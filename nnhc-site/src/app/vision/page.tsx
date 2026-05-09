@@ -5,7 +5,11 @@ import { useEffect } from "react";
 
 export default function VisionRedirectPage() {
   useEffect(() => {
-    window.location.replace("/model/");
+    const timeout = window.setTimeout(() => {
+      window.location.replace("/model/");
+    }, 3000);
+
+    return () => window.clearTimeout(timeout);
   }, []);
 
   return (
