@@ -62,8 +62,8 @@ const STATS = [
 
 export default function HomePage() {
   const labDate = formatLabDate();
-  const heroLine1 = ["Care", "closer", "to", "home,"];
-  const heroLine2 = ["held", "by", "the"];
+  const heroLine1 = ["Care", "at", "home,"];
+  const heroLine2 = ["supported", "by", "your"];
 
   return (
     <main id="main">
@@ -208,11 +208,10 @@ export default function HomePage() {
                 className="h-display mt-5 max-w-[18ch]"
                 style={{ fontSize: "clamp(2.4rem, 6vw, 5.2rem)" }}
               >
-                Proven with the people
+                Vision echoed by
                 <br />
-                actually{" "}
-                <span className="h-italic">building</span>{" "}
-                care.
+                society{" "}
+                <span className="h-italic">leaders</span>.
               </h2>
             </div>
           </Reveal>

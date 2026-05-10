@@ -27,7 +27,7 @@ const instrument = Instrument_Serif({
 
 export const metadata: Metadata = {
   title: {
-    default: "NNHC - Care closer to home",
+    default: "NNHC - Care at home, supported by your neighbourhood",
     template: "%s · NNHC",
   },
   description:
