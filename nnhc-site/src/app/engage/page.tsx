@@ -1,5 +1,6 @@
 import { PageHeader } from "@/components/site/PageHeader";
 import { Reveal } from "@/components/site/Reveal";
+import { ContactCta } from "@/components/site/ContactCta";
 import { ENGAGE } from "@/lib/content";
 
 export const metadata = { title: "Engage" };
@@ -70,15 +71,7 @@ export default function EngagePage() {
             group you align with, and what you can contribute - funds, people,
             materials, software, or simply your block of homes.
           </p>
-          <div className="mt-10 flex flex-wrap gap-3">
-            <a
-              href="mailto:contact@nnhc.example?subject=NNHC%20Engagement"
-              className="btn btn-on-dark"
-            >
-              <span className="btn-icon" aria-hidden>+</span>
-              Contact IMA Cochin
-            </a>
-          </div>
+          <ContactCta />
         </div>
       </section>
     </main>

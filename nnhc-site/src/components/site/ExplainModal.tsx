@@ -37,7 +37,7 @@ export const EXPLAIN_PAGES: ExplainPage[] = [
   {
     kicker: "05 · What we're doing",
     title: "Convening, mapping, prototyping.",
-    body: "A Visioning Lab brought together clinicians, policy-makers, technologists, and community leaders. The work continues with neighbourhood pilots, tooling, and policy.",
+    body: "A Visioning Workshop brought together clinicians, policy-makers, technologists, and community leaders. The work continues with neighbourhood pilots, tooling, and policy.",
   },
   {
     kicker: "06 · How to engage",

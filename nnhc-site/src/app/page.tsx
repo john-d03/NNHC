@@ -49,8 +49,8 @@ const FRICTIONS = [
 const TESTIMONIALS = [
   { quote: "Reduce hospital dependency, control healthcare costs, and revive the family doctor system.", name: "Rajeev Sadanandan, IAS", role: "Former Health Secretary, Kerala" },
   { quote: "The neighbourhood is the smallest unit at which trust still exists at scale. Build there.", name: "Dr. K. M. Abul Hasan", role: "IMA Cochin" },
-  { quote: "We don\u2019t need another vertical. We need a horizontal that connects what already exists.", name: "Visioning Lab participant", role: "Clinical track" },
-  { quote: "Continuity of care is not a feature. It\u2019s the product.", name: "Visioning Lab participant", role: "Policy track" },
+  { quote: "We don\u2019t need another vertical. We need a horizontal that connects what already exists.", name: "Visioning Workshop participant", role: "Clinical track" },
+  { quote: "Continuity of care is not a feature. It\u2019s the product.", name: "Visioning Workshop participant", role: "Policy track" },
 ];
 
 const STATS = [
@@ -74,7 +74,7 @@ export default function HomePage() {
         <div className="relative mx-auto max-w-[88rem] px-5 md:px-10 pt-16 md:pt-28 pb-24 md:pb-36">
           <div className="flex items-center gap-3 mb-10 md:mb-14">
             <span className="notice-pill">
-              <span>Visioning Lab</span>
+              <span>Visioning Workshop</span>
               <span className="sep" aria-hidden />
               <span className="tabular">{labDate}</span>
             </span>
@@ -211,7 +211,7 @@ export default function HomePage() {
                 Vision echoed by
                 <br />
                 society{" "}
-                <span className="h-italic">leaders</span>.
+                <span className="h-italic" style={{ color: "var(--color-electric)" }}>leaders</span>.
               </h2>
             </div>
           </Reveal>
@@ -385,7 +385,7 @@ export default function HomePage() {
           <Reveal>
             <div className="grid grid-cols-12 gap-6 md:gap-10 mb-16 items-end">
               <div className="col-span-12 md:col-span-8">
-                <span className="label">From the Lab</span>
+                <span className="label">From the Workshop</span>
                 <h2
                   id="insights-title"
                   className="h-display mt-5"
@@ -399,7 +399,7 @@ export default function HomePage() {
                 </h2>
               </div>
               <p className="col-span-12 md:col-span-4 lede max-w-[34ch]">
-                Notes from the Visioning Lab - patterns that recurred across clinicians,
+                Notes from the Visioning Workshop - patterns that recurred across clinicians,
                 policy-makers, technologists, and community leaders.
               </p>
             </div>
@@ -443,10 +443,11 @@ export default function HomePage() {
                     className="h-display mt-8"
                     style={{ fontSize: "clamp(2.6rem, 7vw, 6rem)", lineHeight: 0.96 }}
                   >
-                    The network absorbs
+                    Many roles.
                     <br />
-                    contribution from{" "}
-                    <span className="h-italic">many directions.</span>
+                    Many pathways.
+                    <br />
+                    <span className="h-italic">One network.</span>
                   </h2>
                   <p
                     className="mt-7 lede max-w-[48ch]"

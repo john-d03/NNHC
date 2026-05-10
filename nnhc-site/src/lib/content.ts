@@ -5,10 +5,11 @@ export const META = {
   title: "One Health · NNHC",
   tagline: "Care delivered closer to home, supported by the neighbourhood that surrounds it.",
   convenedBy: "IMA Cochin",
+  contactEmail: "contact@nnhc.example",
   // ISO 8601 with IST offset; format at render with Intl.DateTimeFormat
   labDateISO: "2026-04-25T10:30:00+05:30",
   venue: "IMA House, Cochin",
-  status: "Vision endorsed at the Visioning Lab",
+  status: "Vision endorsed at the Visioning Workshop",
   version: "1.0",
 } as const;
 
@@ -126,7 +127,7 @@ export const THREE_STEPS = [
 export const TRACKS = [
   {
     n: "01",
-    title: "Vision Lab & Concurrence from Community Leadership",
+    title: "Visioning Workshop & Concurrence from Community Leadership",
     summary:
       "Sponsors, trade body leaders, and IMA leaders convened to discuss and decide on moving forward, reaffirmed principles, and agreed on next steps.",
     output: "Formation of the Special Purpose Vehicle (SPV), led by IMA, with sponsors as core members and trade association leaders as ex-officio members.",

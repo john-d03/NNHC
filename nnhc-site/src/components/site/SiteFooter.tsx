@@ -53,7 +53,7 @@ export function SiteFooter() {
             ]} />
             <dl className="col-span-2 mt-2 grid grid-cols-2 gap-y-5 border-t border-line pt-6">
               <Meta label="Convened" value={META.convenedBy} />
-              <Meta label="Lab" value={labDate} />
+              <Meta label="Workshop" value={labDate} />
               <Meta label="Venue" value={META.venue} />
               <Meta label="Document" value={`v${META.version}`} />
             </dl>
@@ -66,7 +66,7 @@ export function SiteFooter() {
           <p>
             © {year} <span translate="no">NNHC</span> · One Health initiative · Maintained by IMA Cochin.
           </p>
-          <p className="font-medium tabular">VISIONING LAB · {labDate}</p>
+          <p className="font-medium tabular">VISIONING WORKSHOP · {labDate}</p>
         </div>
       </div>
     </footer>

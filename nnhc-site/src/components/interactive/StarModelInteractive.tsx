@@ -32,35 +32,43 @@ type Meta = {
 const META: Record<StakeholderId, Meta> = {
   hcp: {
     initials: "HCP",
-    glyph: "M0,-9 L0,9 M-9,0 L9,0",
+    // ECG pulse line — universal medical
+    glyph: "M-9,0 L-5,0 L-3,-6 L-1,6 L1,-7 L3,5 L5,0 L9,0",
     metric: "120k+",
     metricLabel: "IMA members in Kerala",
     tagline: "The clinical anchor.",
   },
   lsg: {
     initials: "LSG",
-    glyph: "M-9,5 L-9,-5 L0,-10 L9,-5 L9,5 Z",
+    // Shield with check — civic governance
+    glyph: "M-7,-7 L7,-7 L7,1 C7,5 4,7.5 0,9 C-4,7.5 -7,5 -7,1 Z M-3,-1 L-1,2 L4,-3",
     metric: "941",
     metricLabel: "panchayats statewide",
     tagline: "The public health spine.",
   },
   neigh: {
     initials: "NBR",
-    glyph: "M0,-9 L8,5 L-8,5 Z",
+    // Three figures side by side — neighbourhood
+    glyph:
+      "M-6.6,-3 a1.6,1.6 0 1,0 3.2,0 a1.6,1.6 0 1,0 -3.2,0 M-1.6,-3 a1.6,1.6 0 1,0 3.2,0 a1.6,1.6 0 1,0 -3.2,0 M3.4,-3 a1.6,1.6 0 1,0 3.2,0 a1.6,1.6 0 1,0 -3.2,0 M-8,5 Q-5,1 -2,5 M-3,5 Q0,1 3,5 M2,5 Q5,1 8,5",
     metric: "100+",
     metricLabel: "households per cluster",
     tagline: "Where care actually happens.",
   },
   sso: {
     initials: "SSO",
-    glyph: "M-8,-3 Q0,-12 8,-3 Q8,7 0,9 Q-8,7 -8,-3 Z",
+    // Two interlocking rings — joined hands / unity
+    glyph:
+      "M-7.5,0 a4.5,4.5 0 1,0 9,0 a4.5,4.5 0 1,0 -9,0 M-1.5,0 a4.5,4.5 0 1,0 9,0 a4.5,4.5 0 1,0 -9,0",
     metric: "30+",
     metricLabel: "years of palliative trust",
     tagline: "Decades of community work.",
   },
   biz: {
     initials: "BIZ",
-    glyph: "M-8,-8 L8,-8 L8,8 L-8,8 Z M-8,0 L8,0",
+    // Institution: pediment + columns + base
+    glyph:
+      "M-9,-3 L0,-8 L9,-3 Z M-9,-3 L9,-3 M-9,7 L9,7 M-6,-3 L-6,7 M-2,-3 L-2,7 M2,-3 L2,7 M6,-3 L6,7",
     metric: "5",
     metricLabel: "ex-officio SPV seats",
     tagline: "Co-creators, not just donors.",
@@ -250,35 +258,44 @@ export function StarModelInteractive() {
               <circle cx={CX} cy={CY} r="74" fill="none" stroke="rgba(255,255,255,0.10)" strokeWidth="1" />
               <text
                 x={CX}
-                y={CY - 14}
-                textAnchor="middle"
-                fill="rgba(255,255,255,0.55)"
-                style={{ fontFamily: "var(--font-mono)", fontSize: 10, letterSpacing: 3 }}
-              >
-                THE CENTRE
-              </text>
-              <text
-                x={CX}
-                y={CY + 14}
+                y={CY - 18}
                 textAnchor="middle"
                 fill="#fff"
                 style={{
-                  fontFamily: "var(--font-italic)",
-                  fontStyle: "italic",
+                  fontFamily: "var(--font-display)",
+                  fontWeight: 500,
                   fontSize: 26,
-                  letterSpacing: "-0.01em",
+                  letterSpacing: "-0.02em",
                 }}
               >
-                Care@Home
+                Care
               </text>
               <text
                 x={CX}
-                y={CY + 36}
+                y={CY + 8}
                 textAnchor="middle"
-                fill="rgba(255,255,255,0.5)"
-                style={{ fontFamily: "var(--font-sans)", fontSize: 11 }}
+                fill="rgba(255,255,255,0.6)"
+                style={{
+                  fontFamily: "var(--font-display)",
+                  fontWeight: 400,
+                  fontSize: 22,
+                }}
               >
-                Patient · Family · Caregiver
+                @
+              </text>
+              <text
+                x={CX}
+                y={CY + 34}
+                textAnchor="middle"
+                fill="#fff"
+                style={{
+                  fontFamily: "var(--font-display)",
+                  fontWeight: 500,
+                  fontSize: 26,
+                  letterSpacing: "-0.02em",
+                }}
+              >
+                Home
               </text>
             </g>
 

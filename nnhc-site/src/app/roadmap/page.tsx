@@ -149,9 +149,9 @@ export default function RoadmapPage() {
 
       <ClosingCta
         title="Hear who shaped this roadmap."
-        body="The voices, frictions, and convictions of the clinicians, policy-makers, and community leaders who showed up to the lab."
+        body="The voices, frictions, and convictions of the clinicians, policy-makers, and community leaders who showed up to the workshop."
         href="/voices"
-        label="Voices from the lab"
+        label="Voices from the workshop"
       />
     </main>
   );
