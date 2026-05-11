@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { META, formatLabDate } from "@/lib/content";
+import { FooterContactButton } from "@/components/site/FooterContactButton";
 
 export function SiteFooter() {
   const year = new Date().getFullYear();
@@ -34,10 +35,13 @@ export function SiteFooter() {
               </span>{" "}
               healthcare system.
             </h2>
-            <Link href="/engage" className="btn btn-primary mt-8">
-              Engage with NNHC
-              <span className="btn-icon" aria-hidden>→</span>
-            </Link>
+            <div className="mt-8 flex flex-wrap items-center gap-3">
+              <Link href="/engage" className="btn btn-primary">
+                Engage with NNHC
+                <span className="btn-icon" aria-hidden>→</span>
+              </Link>
+              <FooterContactButton />
+            </div>
           </div>
 
           <div className="md:col-span-5 grid grid-cols-2 gap-x-8 gap-y-8 md:pl-10 md:border-l md:border-line">

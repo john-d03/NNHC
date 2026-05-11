@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
+import { useContact } from "@/components/site/ContactProvider";
 
 const ROUTES = [
   { href: "/model", label: "Vision & Model" },
@@ -15,6 +16,7 @@ const ROUTES = [
 
 export function SiteNav() {
   const pathname = usePathname();
+  const { open: openContact } = useContact();
   const [open, setOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const navRef = useRef<HTMLDivElement | null>(null);
@@ -162,10 +164,16 @@ export function SiteNav() {
           })}
         </nav>
 
-        <Link href="/engage" className="hidden md:inline-flex btn btn-primary">
-          Engage
-          <span className="btn-icon" aria-hidden>→</span>
-        </Link>
+        <div className="hidden md:flex items-center gap-2">
+          <button
+            type="button"
+            onClick={openContact}
+            className="btn btn-primary"
+          >
+            Contact
+            <span className="btn-icon" aria-hidden>→</span>
+          </button>
+        </div>
 
         <button
           type="button"
@@ -243,6 +251,16 @@ export function SiteNav() {
             Engage with NNHC
             <span className="btn-icon" aria-hidden>→</span>
           </Link>
+          <button
+            type="button"
+            onClick={() => {
+              setOpen(false);
+              openContact();
+            }}
+            className="btn btn-ghost justify-center mt-3 self-start"
+          >
+            Contact us
+          </button>
         </nav>
       </div>
     </header>

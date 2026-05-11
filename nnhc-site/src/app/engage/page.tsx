@@ -1,6 +1,7 @@
 import { PageHeader } from "@/components/site/PageHeader";
 import { Reveal } from "@/components/site/Reveal";
 import { ContactCta } from "@/components/site/ContactCta";
+import { ContactInline } from "@/components/site/ContactInline";
 import { ENGAGE } from "@/lib/content";
 
 export const metadata = { title: "Engage" };
@@ -12,8 +13,12 @@ export default function EngagePage() {
         kicker="6 pathways"
         title="Where you fit,"
         italicTail="and what to do next."
-        lede="The network is built to absorb contribution from many directions. Each pathway maps to one of the five Star Model groups."
+        lede="Many roles, many pathways, one network. Each pathway below maps to one of the five Star Model groups."
       />
+
+      <section className="mx-auto max-w-[88rem] px-5 md:px-10 pt-4 md:pt-6 -mt-10 md:-mt-14">
+        <ContactInline prefix="Already know what you bring?" label="Contact us directly" />
+      </section>
 
       <section className="mx-auto max-w-[88rem] px-5 md:px-10 py-20 md:py-28">
         <ul className="grid md:grid-cols-2 lg:grid-cols-3 gap-5">
