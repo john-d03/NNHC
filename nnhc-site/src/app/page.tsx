@@ -299,7 +299,7 @@ export default function HomePage() {
               </div>
               <p className="col-span-12 md:col-span-4 lede max-w-[36ch]">
                 Every architectural decision the network makes is tested against these.
-                They are the floor &mdash; not the ceiling.
+                They are the floor - not the ceiling.
               </p>
             </div>
           </Reveal>
@@ -454,7 +454,7 @@ export default function HomePage() {
                     style={{ color: "rgba(255,255,255,0.85)" }}
                   >
                     Clinician, policy-maker, technologist, community organiser, or
-                    researcher &mdash; there is a clear way in.
+                    researcher - there is a clear way in.
                   </p>
                 </div>
                 <div className="col-span-12 md:col-span-4 md:flex md:justify-end">

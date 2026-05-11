@@ -32,7 +32,7 @@ type Meta = {
 const META: Record<StakeholderId, Meta> = {
   hcp: {
     initials: "HCP",
-    // ECG pulse line — universal medical
+    // ECG pulse line - universal medical
     glyph: "M-9,0 L-5,0 L-3,-6 L-1,6 L1,-7 L3,5 L5,0 L9,0",
     metric: "120k+",
     metricLabel: "IMA members in Kerala",
@@ -40,7 +40,7 @@ const META: Record<StakeholderId, Meta> = {
   },
   lsg: {
     initials: "LSG",
-    // Shield with check — civic governance
+    // Shield with check - civic governance
     glyph: "M-7,-7 L7,-7 L7,1 C7,5 4,7.5 0,9 C-4,7.5 -7,5 -7,1 Z M-3,-1 L-1,2 L4,-3",
     metric: "941",
     metricLabel: "panchayats statewide",
@@ -48,7 +48,7 @@ const META: Record<StakeholderId, Meta> = {
   },
   neigh: {
     initials: "NBR",
-    // Three figures side by side — neighbourhood
+    // Three figures side by side - neighbourhood
     glyph:
       "M-6.6,-3 a1.6,1.6 0 1,0 3.2,0 a1.6,1.6 0 1,0 -3.2,0 M-1.6,-3 a1.6,1.6 0 1,0 3.2,0 a1.6,1.6 0 1,0 -3.2,0 M3.4,-3 a1.6,1.6 0 1,0 3.2,0 a1.6,1.6 0 1,0 -3.2,0 M-8,5 Q-5,1 -2,5 M-3,5 Q0,1 3,5 M2,5 Q5,1 8,5",
     metric: "100+",
@@ -57,7 +57,7 @@ const META: Record<StakeholderId, Meta> = {
   },
   sso: {
     initials: "SSO",
-    // Two interlocking rings — joined hands / unity
+    // Two interlocking rings - joined hands / unity
     glyph:
       "M-7.5,0 a4.5,4.5 0 1,0 9,0 a4.5,4.5 0 1,0 -9,0 M-1.5,0 a4.5,4.5 0 1,0 9,0 a4.5,4.5 0 1,0 -9,0",
     metric: "30+",

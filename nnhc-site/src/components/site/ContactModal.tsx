@@ -69,7 +69,7 @@ export function ContactModal({
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    if (company) return; // honeypot tripped — silently drop
+    if (company) return; // honeypot tripped - silently drop
 
     const ref = generateRef();
     setRefNum(ref);
@@ -180,7 +180,7 @@ export function ContactModal({
         {sent ? (
           <div className="p-6 md:p-8">
             <p className="lede">
-              Thanks — your message is on its way. We&rsquo;ll route it to the right
+              Thanks - your message is on its way. We&rsquo;ll route it to the right
               part of the network and reply to{" "}
               <span className="text-ink">{email || "your email"}</span> shortly.
             </p>
@@ -215,7 +215,7 @@ export function ContactModal({
           </div>
         ) : (
           <form onSubmit={handleSubmit} className="p-6 md:p-8 space-y-5">
-            {/* Honeypot — hidden from users, bots fill it */}
+            {/* Honeypot - hidden from users, bots fill it */}
             <input
               type="text"
               name="company"
@@ -361,7 +361,7 @@ function generateRef(): string {
     const raw = localStorage.getItem(storageKey);
     if (raw) used = new Set(JSON.parse(raw) as string[]);
   } catch {
-    /* localStorage unavailable — fall through with empty set */
+    /* localStorage unavailable - fall through with empty set */
   }
 
   // Base36, 3 chars. Bump until unused. Wraps within 36^3 = 46,656 slots/month.
