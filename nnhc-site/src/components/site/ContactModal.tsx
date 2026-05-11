@@ -25,7 +25,13 @@ export function ContactModal({
   const [email, setEmail] = useState("");
   const [role, setRole] = useState(ROLES[0]);
   const [message, setMessage] = useState("");
-  const [sent, setSent] = useState(false);
+  const [company, setCompany] = useState(""); // honeypot
+  const [status, setStatus] = useState<"idle" | "sending" | "sent" | "error">(
+    "idle"
+  );
+  const [errorMsg, setErrorMsg] = useState<string | null>(null);
+  const [refNum, setRefNum] = useState<string>("");
+  const sent = status === "sent";
 
   const dialogRef = useRef<HTMLDivElement | null>(null);
   const firstFieldRef = useRef<HTMLInputElement | null>(null);
@@ -33,7 +39,9 @@ export function ContactModal({
 
   useEffect(() => {
     if (!open) return;
-    setSent(false);
+    setStatus("idle");
+    setErrorMsg(null);
+    setRefNum("");
     prevFocus.current = (document.activeElement as HTMLElement) ?? null;
     const prevOverflow = document.body.style.overflow;
     document.body.style.overflow = "hidden";
@@ -59,22 +67,71 @@ export function ContactModal({
 
   if (!open) return null;
 
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    const subject = `NNHC engagement - ${role}`;
-    const lines = [
-      `Name: ${name}`,
-      `Email: ${email}`,
-      `Role: ${role}`,
-      "",
-      message,
-    ];
-    const body = lines.join("\n");
-    const mailto = `mailto:${META.contactEmail}?subject=${encodeURIComponent(
-      subject
-    )}&body=${encodeURIComponent(body)}`;
-    window.location.href = mailto;
-    setSent(true);
+    if (company) return; // honeypot tripped — silently drop
+
+    const ref = generateRef();
+    setRefNum(ref);
+    const subject = `NNHC engagement [${ref}] - ${role}`;
+    const accessKey = process.env.NEXT_PUBLIC_WEB3FORMS_KEY;
+
+    // Fallback: if no Web3Forms key is configured, use mailto.
+    if (!accessKey) {
+      const lines = [
+        `Reference: ${ref}`,
+        `Name: ${name}`,
+        `Email: ${email}`,
+        `Role: ${role}`,
+        "",
+        message,
+      ];
+      const body = lines.join("\n");
+      const mailto = `mailto:${META.contactEmail}?subject=${encodeURIComponent(
+        subject
+      )}&body=${encodeURIComponent(body)}`;
+      window.location.href = mailto;
+      setStatus("sent");
+      return;
+    }
+
+    setStatus("sending");
+    setErrorMsg(null);
+
+    try {
+      const res = await fetch("https://api.web3forms.com/submit", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Accept: "application/json",
+        },
+        body: JSON.stringify({
+          access_key: accessKey,
+          subject,
+          from_name: "NNHC website",
+          replyto: email,
+          reference: ref,
+          name,
+          email,
+          role,
+          message,
+          botcheck: company, // Web3Forms honeypot
+        }),
+      });
+      const data = (await res.json().catch(() => ({}))) as {
+        success?: boolean;
+        message?: string;
+      };
+      if (res.ok && data.success) {
+        setStatus("sent");
+      } else {
+        setStatus("error");
+        setErrorMsg(data.message ?? "Something went wrong. Please try again.");
+      }
+    } catch {
+      setStatus("error");
+      setErrorMsg("Network error. Please try again or email us directly.");
+    }
   };
 
   return (
@@ -123,8 +180,23 @@ export function ContactModal({
         {sent ? (
           <div className="p-6 md:p-8">
             <p className="lede">
-              Your email client should have opened with a pre-filled message. If it
-              didn&rsquo;t, write to{" "}
+              Thanks — your message is on its way. We&rsquo;ll route it to the right
+              part of the network and reply to{" "}
+              <span className="text-ink">{email || "your email"}</span> shortly.
+            </p>
+            {refNum && (
+              <div className="mt-5 rounded-lg border border-line bg-bg-soft px-4 py-3">
+                <span className="label block mb-1">Your reference</span>
+                <code className="text-ink text-base font-mono tracking-tight select-all">
+                  {refNum}
+                </code>
+                <p className="text-xs text-ink-mute mt-2">
+                  Quote this if you follow up by email.
+                </p>
+              </div>
+            )}
+            <p className="text-sm text-ink-soft mt-4">
+              Prefer email? Write to{" "}
               <a
                 href={`mailto:${META.contactEmail}`}
                 className="underline hover:text-electric"
@@ -143,6 +215,23 @@ export function ContactModal({
           </div>
         ) : (
           <form onSubmit={handleSubmit} className="p-6 md:p-8 space-y-5">
+            {/* Honeypot — hidden from users, bots fill it */}
+            <input
+              type="text"
+              name="company"
+              tabIndex={-1}
+              autoComplete="off"
+              value={company}
+              onChange={(e) => setCompany(e.target.value)}
+              style={{
+                position: "absolute",
+                left: "-9999px",
+                width: 1,
+                height: 1,
+                opacity: 0,
+              }}
+              aria-hidden="true"
+            />
             <Field label="Name" htmlFor="contact-name">
               <input
                 ref={firstFieldRef}
@@ -193,18 +282,44 @@ export function ContactModal({
             </Field>
             <div className="flex flex-wrap items-center justify-between gap-3 pt-2">
               <p className="text-xs text-ink-mute max-w-[28ch]">
-                Submitting opens your email app with the message pre-filled.
+                We&rsquo;ll only use your details to reply.
               </p>
               <div className="flex gap-3">
-                <button type="button" onClick={onClose} className="btn btn-ghost">
+                <button
+                  type="button"
+                  onClick={onClose}
+                  className="btn btn-ghost"
+                  disabled={status === "sending"}
+                >
                   Cancel
                 </button>
-                <button type="submit" className="btn btn-primary">
-                  Send message
-                  <span className="btn-icon" aria-hidden>→</span>
+                <button
+                  type="submit"
+                  className="btn btn-primary"
+                  disabled={status === "sending"}
+                >
+                  {status === "sending" ? "Sending…" : "Send message"}
+                  <span className="btn-icon" aria-hidden>
+                    →
+                  </span>
                 </button>
               </div>
             </div>
+            {status === "error" && errorMsg && (
+              <p
+                role="alert"
+                className="text-sm text-red-600 dark:text-red-400 pt-1"
+              >
+                {errorMsg}{" "}
+                <a
+                  href={`mailto:${META.contactEmail}`}
+                  className="underline hover:text-electric"
+                >
+                  Email us instead
+                </a>
+                .
+              </p>
+            )}
           </form>
         )}
       </div>
@@ -227,4 +342,53 @@ function Field({
       {children}
     </label>
   );
+}
+
+// e.g. NNHC-2605-K7Q  (year+month + 3-char base36, unique per browser)
+function generateRef(): string {
+  const d = new Date();
+  const yy = String(d.getFullYear()).slice(-2);
+  const mm = String(d.getMonth() + 1).padStart(2, "0");
+  const monthKey = `${yy}${mm}`;
+  const storageKey = `nnhc:refs:${monthKey}`;
+
+  // Seed from seconds-in-month so refs still sort roughly chronologically.
+  const monthStart = new Date(d.getFullYear(), d.getMonth(), 1).getTime();
+  let n = Math.floor((d.getTime() - monthStart) / 1000);
+
+  let used: Set<string> = new Set();
+  try {
+    const raw = localStorage.getItem(storageKey);
+    if (raw) used = new Set(JSON.parse(raw) as string[]);
+  } catch {
+    /* localStorage unavailable — fall through with empty set */
+  }
+
+  // Base36, 3 chars. Bump until unused. Wraps within 36^3 = 46,656 slots/month.
+  const MAX = 36 ** 3;
+  let suffix = "";
+  for (let i = 0; i < MAX; i++) {
+    const candidate = ((n + i) % MAX)
+      .toString(36)
+      .toUpperCase()
+      .padStart(3, "0")
+      .slice(-3);
+    if (!used.has(candidate)) {
+      suffix = candidate;
+      break;
+    }
+  }
+  // Extremely unlikely fallback if all 46,656 slots taken this month.
+  if (!suffix) {
+    suffix = Math.random().toString(36).slice(2, 5).toUpperCase();
+  }
+
+  try {
+    used.add(suffix);
+    localStorage.setItem(storageKey, JSON.stringify([...used]));
+  } catch {
+    /* ignore quota / private-mode errors */
+  }
+
+  return `NNHC-${monthKey}-${suffix}`;
 }
