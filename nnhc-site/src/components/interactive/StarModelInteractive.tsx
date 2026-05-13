@@ -14,8 +14,8 @@ const CY = 300;
 const R = 210;
 
 const ANGLES: Record<StakeholderId, number> = {
-  hcp: -90,
-  biz: -18,
+  biz: -90,
+  hcp: -18,
   sso: 54,
   neigh: 126,
   lsg: 198,
@@ -193,20 +193,37 @@ export function StarModelInteractive() {
 
             <rect width="600" height="600" fill="url(#dotgrid)" mask="url(#gridMask)" />
 
-            {/* Outer guide ring */}
-            <circle cx={CX} cy={CY} r={R + 30} fill="none" stroke="var(--color-line)" strokeWidth="1" strokeDasharray="2 6" />
-            {/* Inner ring */}
+            {/* Outer guide ring (solid) */}
+            <circle cx={CX} cy={CY} r={R + 30} fill="none" stroke="var(--color-line-strong)" strokeWidth="1" />
+            {/* Inner ring (dotted) */}
             <circle cx={CX} cy={CY} r={R} fill="url(#ringFade)" />
-            <circle cx={CX} cy={CY} r={R} fill="none" stroke="var(--color-line-strong)" strokeWidth="1" />
+            <circle cx={CX} cy={CY} r={R} fill="none" stroke="var(--color-line-strong)" strokeWidth="1" strokeDasharray="1 5" strokeLinecap="round" />
 
-            {/* Pentagon */}
+            {/* Pentagon - dotted */}
             <polygon
               points={polyPoints}
+              fill="var(--color-electric)"
+              fillOpacity="0.04"
+              stroke="var(--color-electric)"
+              strokeWidth="1.5"
+              strokeOpacity="0.65"
+              strokeLinejoin="round"
+              strokeLinecap="round"
+              strokeDasharray="1 6"
+            />
+            {/* Pentagram (5-pointed star) connecting alternate vertices - dotted */}
+            <polygon
+              points={ORDER.map((_, i) => {
+                const p = nodePoint(ORDER[(i * 2) % ORDER.length]);
+                return `${p.x},${p.y}`;
+              }).join(" ")}
               fill="none"
-              stroke="var(--color-line-strong)"
-              strokeWidth="1"
-              strokeDasharray="3 5"
-              opacity="0.7"
+              stroke="var(--color-electric)"
+              strokeWidth="1.25"
+              strokeOpacity="0.55"
+              strokeLinejoin="round"
+              strokeLinecap="round"
+              strokeDasharray="1 6"
             />
 
             {/* Inactive spokes */}
@@ -255,48 +272,71 @@ export function StarModelInteractive() {
             {/* Centre disc */}
             <g>
               <circle cx={CX} cy={CY} r="84" fill="var(--color-ink)" />
-              <circle cx={CX} cy={CY} r="74" fill="none" stroke="rgba(255,255,255,0.10)" strokeWidth="1" />
-              <text
-                x={CX}
-                y={CY - 18}
-                textAnchor="middle"
-                fill="#fff"
-                style={{
-                  fontFamily: "var(--font-display)",
-                  fontWeight: 500,
-                  fontSize: 26,
-                  letterSpacing: "-0.02em",
-                }}
+
+              {/* Home icon (centred, refined) */}
+              <g
+                transform={`translate(${CX} ${CY})`}
+                fill="none"
+                stroke="#fff"
+                strokeWidth="1.6"
+                strokeLinecap="round"
+                strokeLinejoin="round"
               >
-                Care
-              </text>
-              <text
-                x={CX}
-                y={CY + 8}
-                textAnchor="middle"
-                fill="rgba(255,255,255,0.6)"
-                style={{
-                  fontFamily: "var(--font-display)",
-                  fontWeight: 400,
-                  fontSize: 22,
-                }}
-              >
-                @
-              </text>
-              <text
-                x={CX}
-                y={CY + 34}
-                textAnchor="middle"
-                fill="#fff"
-                style={{
-                  fontFamily: "var(--font-display)",
-                  fontWeight: 500,
-                  fontSize: 26,
-                  letterSpacing: "-0.02em",
-                }}
-              >
-                Home
-              </text>
+                {/* Roof + walls */}
+                <path d="M-18,-2 L0,-18 L18,-2 L18,18 L-18,18 Z" />
+                {/* Door */}
+                <path d="M-5,18 L-5,6 L5,6 L5,18" />
+                {/* Chimney */}
+                <path d="M9,-11 L9,-15 L13,-15 L13,-7" />
+                {/* Heart inside (signifying care at home) */}
+                <path
+                  d="M0,2 C-3,-2 -8,0 -8,4 C-8,7 -4,10 0,13 C4,10 8,7 8,4 C8,0 3,-2 0,2 Z"
+                  fill="var(--color-electric)"
+                  stroke="var(--color-electric)"
+                  strokeWidth="1"
+                />
+              </g>
+
+              {/* Circular text path: "CARE · AT · HOME · " rotating around the disc */}
+              <defs>
+                <path
+                  id="care-home-circle"
+                  d={`M ${CX - 64},${CY} a 64,64 0 1,1 128,0 a 64,64 0 1,1 -128,0`}
+                />
+              </defs>
+              <g>
+                <text
+                  fill="#fff"
+                  style={{
+                    fontFamily: "var(--font-mono)",
+                    fontSize: 11,
+                    letterSpacing: 6,
+                    fontWeight: 500,
+                    textTransform: "uppercase",
+                  }}
+                >
+                  <textPath
+                    href="#care-home-circle"
+                    startOffset="0"
+                    textAnchor="start"
+                    textLength={2 * Math.PI * 64}
+                    lengthAdjust="spacing"
+                  >
+                    CARE · AT · HOME ·  · 24/7 ·  ·
+                  </textPath>
+                </text>
+                {!reduced && (
+                  <animateTransform
+                    attributeName="transform"
+                    attributeType="XML"
+                    type="rotate"
+                    from={`0 ${CX} ${CY}`}
+                    to={`360 ${CX} ${CY}`}
+                    dur="22s"
+                    repeatCount="indefinite"
+                  />
+                )}
+              </g>
             </g>
 
             {/* Nodes */}
@@ -398,67 +438,9 @@ export function StarModelInteractive() {
           </svg>
         </div>
 
-        {/* Controls strip */}
-        <div className="mt-6 md:mt-7 flex items-center gap-2 md:gap-3 max-w-[440px] sm:max-w-[520px] lg:max-w-[600px] mx-auto">
-          <button
-            type="button"
-            onClick={() => step(-1)}
-            aria-label="Previous stakeholder"
-            className="constellation-arrow"
-          >
-            <svg width="14" height="14" viewBox="0 0 14 14" aria-hidden>
-              <path d="M9 2 L4 7 L9 12" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
-            </svg>
-          </button>
-
-          <div className="constellation-segments" role="tablist" aria-label="Stakeholder index">
-            {ORDER.map((id, i) => {
-              const active = id === selected;
-              return (
-                <button
-                  key={id}
-                  type="button"
-                  role="tab"
-                  aria-selected={active}
-                  onClick={() => select(id)}
-                  className="constellation-segment"
-                  data-active={active}
-                >
-                  <span className="constellation-segment__num">
-                    {String(i + 1).padStart(2, "0")}
-                  </span>
-                  <span className="constellation-segment__label">{META[id].initials}</span>
-                  <span className="constellation-segment__bar" aria-hidden />
-                </button>
-              );
-            })}
-          </div>
-
-          <button
-            type="button"
-            onClick={() => step(1)}
-            aria-label="Next stakeholder"
-            className="constellation-arrow"
-          >
-            <svg width="14" height="14" viewBox="0 0 14 14" aria-hidden>
-              <path d="M5 2 L10 7 L5 12" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
-            </svg>
-          </button>
-
-          <button
-            type="button"
-            onClick={() => setAuto((a) => !a)}
-            aria-pressed={auto}
-            className="constellation-auto"
-            title={auto ? "Pause auto-rotation" : "Resume auto-rotation"}
-          >
-            <span className="constellation-auto__dot" data-on={auto} aria-hidden />
-            <span>{auto ? "Auto" : "Paused"}</span>
-          </button>
-        </div>
       </div>
 
-      {/* ───── Detail panel ───── */}
+      {/* ───── Detail panel (with integrated controls) ───── */}
       <div className="md:col-span-5 lg:col-span-5">
         <div key={selected} className="constellation-panel card p-6 md:p-7 lg:p-8">
           <div className="flex items-baseline justify-between gap-4 mb-5 pb-4 border-b border-line">
@@ -490,9 +472,68 @@ export function StarModelInteractive() {
             </span>
           </div>
 
-          <div>
+          <div className="mb-6">
             <span className="label block mb-2">Members</span>
             <p className="text-sm text-ink-soft leading-relaxed">{current.members}</p>
+          </div>
+
+          {/* Integrated controls */}
+          <div className="flex items-center gap-2 md:gap-3 pt-5 border-t border-line">
+            <button
+              type="button"
+              onClick={() => step(-1)}
+              aria-label="Previous stakeholder"
+              className="constellation-arrow"
+            >
+              <svg width="14" height="14" viewBox="0 0 14 14" aria-hidden>
+                <path d="M9 2 L4 7 L9 12" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+              </svg>
+            </button>
+
+            <div className="constellation-segments flex-1" role="tablist" aria-label="Stakeholder index">
+              {ORDER.map((id, i) => {
+                const active = id === selected;
+                return (
+                  <button
+                    key={id}
+                    type="button"
+                    role="tab"
+                    aria-selected={active}
+                    onClick={() => select(id)}
+                    className="constellation-segment"
+                    data-active={active}
+                  >
+                    <span className="constellation-segment__num">
+                      {String(i + 1).padStart(2, "0")}
+                    </span>
+                    <span className="constellation-segment__label">{META[id].initials}</span>
+                    <span className="constellation-segment__bar" aria-hidden />
+                  </button>
+                );
+              })}
+            </div>
+
+            <button
+              type="button"
+              onClick={() => step(1)}
+              aria-label="Next stakeholder"
+              className="constellation-arrow"
+            >
+              <svg width="14" height="14" viewBox="0 0 14 14" aria-hidden>
+                <path d="M5 2 L10 7 L5 12" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+              </svg>
+            </button>
+
+            <button
+              type="button"
+              onClick={() => setAuto((a) => !a)}
+              aria-pressed={auto}
+              className="constellation-auto"
+              title={auto ? "Pause auto-rotation" : "Resume auto-rotation"}
+            >
+              <span className="constellation-auto__dot" data-on={auto} aria-hidden />
+              <span>{auto ? "Auto" : "Paused"}</span>
+            </button>
           </div>
         </div>
       </div>
