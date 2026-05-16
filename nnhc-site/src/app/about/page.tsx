@@ -1,36 +1,42 @@
+"use client";
+
 import { PageHeader, SectionTitle } from "@/components/site/PageHeader";
 import { Reveal } from "@/components/site/Reveal";
 import { CHALLENGES } from "@/lib/content";
 import { FaqList } from "@/components/interactive/FaqList";
 import { GlossaryList } from "@/components/interactive/GlossaryList";
-
-export const metadata = { title: "About" };
+import { useT } from "@/lib/i18n";
 
 export default function AboutPage() {
+  const t = useT();
   return (
     <main id="main">
       <PageHeader
-        kicker="Challenges · FAQ · Glossary"
-        title="The questions that"
-        italicTail="come up first."
-        lede="Three strategic challenges, the operational questions that surface in executive committees, and a short reference for terms used throughout."
+        kicker={t("about.hero.kicker", "Challenges · FAQ · Glossary")}
+        title={t("about.hero.titlePrefix", "The questions that")}
+        italicTail={t("about.hero.titleItalic", "come up first.")}
+        lede={t(
+          "about.hero.lede",
+          "Three strategic challenges, the operational questions that surface in executive committees, and a short reference for terms used throughout.",
+        )}
       />
 
       {/* Challenges */}
       <section id="challenges" className="mx-auto max-w-[88rem] px-5 md:px-10 py-20 md:py-28">
         <SectionTitle
-          kicker="Strategic challenges"
-          title="Three challenges, framed by Rajeev Sadanandan IAS."
+          kicker={t("about.challenges.kicker", "Strategic challenges")}
+          title={t("about.challenges.title", "Three challenges, framed by Rajeev Sadanandan IAS.")}
         />
 
         <figure className="mt-12 max-w-3xl">
           <blockquote className="h-display-italic text-2xl md:text-4xl leading-tight text-balance">
-            “The ideas presented by IMA resonate with the needs of the broader
-            community. Sector-wise discussions should now be undertaken and
-            consolidated into the final project proposal.”
+            “{t(
+              "about.challenges.quote",
+              "The ideas presented by IMA resonate with the needs of the broader community. Sector-wise discussions should now be undertaken and consolidated into the final project proposal.",
+            )}”
           </blockquote>
           <figcaption className="mt-6 label">
-            Rajeev Sadanandan IAS · Former Health Secretary, Kerala
+            {t("about.challenges.attribution", "Rajeev Sadanandan IAS · Former Health Secretary, Kerala")}
           </figcaption>
         </figure>
 
@@ -42,13 +48,13 @@ export default function AboutPage() {
                   {c.n}
                 </span>
                 <h3 className="h-display text-xl md:text-2xl mb-5 leading-tight text-balance">
-                  {c.title}
+                  {t(`challenges.${i + 1}.title`, c.title)}
                 </h3>
                 <ul className="space-y-2.5">
-                  {c.points.map((p) => (
+                  {c.points.map((p, j) => (
                     <li key={p} className="flex gap-3 text-sm text-ink-soft leading-relaxed">
                       <span aria-hidden className="text-electric mt-1.5">▸</span>
-                      <span>{p}</span>
+                      <span>{t(`challenges.${i + 1}.point${j + 1}`, p)}</span>
                     </li>
                   ))}
                 </ul>
@@ -62,8 +68,8 @@ export default function AboutPage() {
       <section id="faq" className="border-t border-line bg-surface-elevated">
         <div className="mx-auto max-w-[88rem] px-5 md:px-10 py-20 md:py-28">
           <SectionTitle
-            kicker="Frequently asked"
-            title="Operational questions that come up first."
+            kicker={t("about.faq.kicker", "Frequently asked")}
+            title={t("about.faq.title", "Operational questions that come up first.")}
           />
           <div className="mt-12">
             <FaqList />
@@ -75,8 +81,8 @@ export default function AboutPage() {
       <section id="glossary" className="border-t border-line">
         <div className="mx-auto max-w-[88rem] px-5 md:px-10 py-20 md:py-28">
           <SectionTitle
-            kicker="Glossary"
-            title="A short reference for the terms used throughout."
+            kicker={t("about.glossary.kicker", "Glossary")}
+            title={t("about.glossary.title", "A short reference for the terms used throughout.")}
           />
           <div className="mt-12">
             <GlossaryList />

@@ -1224,3 +1224,76 @@ a.u:hover { color: var(--color-electric); text-decoration-color: var(--color-ele
 }
 
 
+
+/* ────────────────────────────────────────────────────────────────
+   Google Translate widget · hide its chrome, keep behaviour
+   ──────────────────────────────────────────────────────────────── */
+.skiptranslate,
+.goog-te-banner-frame,
+.goog-te-banner-frame.skiptranslate,
+#goog-gt-tt,
+.goog-tooltip,
+.goog-tooltip:hover,
+.goog-te-balloon-frame {
+  display: none !important;
+  visibility: hidden !important;
+}
+body {
+  top: 0 !important;
+  position: static !important;
+}
+.goog-text-highlight {
+  background: transparent !important;
+  box-shadow: none !important;
+  -webkit-box-shadow: none !important;
+}
+/* Google injects <font> tags around translated text — neutralise them. */
+font[style] {
+  background: transparent !important;
+  box-shadow: none !important;
+}
+
+/* ────────────────────────────────────────────────────────────────
+   Language switcher · EN / ML / HI segmented control
+   ──────────────────────────────────────────────────────────────── */
+.lang-switch {
+  display: inline-flex;
+  align-items: stretch;
+  gap: 0;
+  padding: 2px;
+  border: 1px solid var(--color-line-strong);
+  border-radius: 999px;
+  background: transparent;
+  font-family: var(--font-mono);
+  line-height: 1;
+}
+.lang-switch__btn {
+  appearance: none;
+  background: transparent;
+  border: 0;
+  cursor: pointer;
+  padding: 0.4rem 0.65rem;
+  font-size: 0.7rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  color: var(--color-ink-mute);
+  border-radius: 999px;
+  transition: color 160ms ease, background-color 160ms ease;
+  min-width: 2.25rem;
+  text-align: center;
+}
+.lang-switch__btn:hover {
+  color: var(--color-ink);
+}
+.lang-switch__btn:focus-visible {
+  outline: 2px solid var(--color-electric);
+  outline-offset: 2px;
+}
+.lang-switch__btn.is-active {
+  background: var(--color-ink);
+  color: var(--color-bg);
+}
+.lang-switch--md .lang-switch__btn {
+  padding: 0.5rem 0.85rem;
+  font-size: 0.78rem;
+}

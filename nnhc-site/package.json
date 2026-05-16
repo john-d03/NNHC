@@ -3,6 +3,9 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
+    "generate-translations": "node scripts/generate-translations.mjs",
+    "predev": "node scripts/generate-translations.mjs",
+    "prebuild": "node scripts/generate-translations.mjs",
     "dev": "next dev",
     "build": "next build",
     "start": "next start",

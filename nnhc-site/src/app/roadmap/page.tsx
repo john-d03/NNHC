@@ -1,9 +1,10 @@
+"use client";
+
 import { PageHeader, SectionTitle } from "@/components/site/PageHeader";
 import { Reveal } from "@/components/site/Reveal";
 import { ClosingCta } from "@/components/site/ClosingCta";
 import { MILESTONES, HUNDRED_DAY_PLAN, RESOURCING } from "@/lib/content";
-
-export const metadata = { title: "Roadmap" };
+import { useT } from "@/lib/i18n";
 
 const ACTS = [
   {
@@ -33,32 +34,42 @@ const ACTS = [
 ] as const;
 
 export default function RoadmapPage() {
+  const t = useT();
   return (
     <main id="main">
       <PageHeader
-        index="P3"
-        kicker="9 milestones"
-        title="From convening to"
-        italicTail="measurable impact."
-        lede="Nine sequential milestones structure the journey from launch to evidence of healthcare impact at the population level. Each milestone has a defined output and a defined owner."
+        index={t("roadmap.hero.pillIndex", "P3")}
+        kicker={t("roadmap.hero.pillLabel", "9 milestones")}
+        title={t("roadmap.hero.titlePrefix", "From convening to")}
+        italicTail={t("roadmap.hero.titleItalic", "measurable impact.")}
+        lede={t(
+          "roadmap.hero.lede",
+          "Nine sequential milestones structure the journey from launch to evidence of healthcare impact at the population level. Each milestone has a defined output and a defined owner.",
+        )}
       />
 
       <section className="mx-auto max-w-[88rem] px-5 md:px-10 py-24 md:py-32">
         {ACTS.map((act, ai) => {
           const items = MILESTONES.filter(
-            (m) => Number(m.n) >= act.from && Number(m.n) <= act.to
+            (m) => Number(m.n) >= act.from && Number(m.n) <= act.to,
           );
+          const progress = t(
+            "roadmap.act.progressLabel",
+            "M{from} - M{to} · {count} of 9",
+          )
+            .replace("{from}", String(act.from).padStart(2, "0"))
+            .replace("{to}", String(act.to).padStart(2, "0"))
+            .replace("{count}", String(items.length));
           return (
             <div
               key={act.label}
               className={`grid md:grid-cols-12 gap-10 md:gap-16 ${ai > 0 ? "mt-24 md:mt-32 pt-20 md:pt-24 border-t border-line" : ""}`}
             >
-              {/* Phase header */}
               <Reveal as="div" className="md:col-span-4">
                 <div className="md:sticky md:top-32">
                   <div className="flex items-center gap-3">
                     <span className="label-num text-electric tabular text-sm">
-                      Act {act.roman}
+                      {t(`roadmap.act${ai + 1}.label`, `Act ${act.roman}`)}
                     </span>
                     <span aria-hidden className="h-px w-10 bg-electric" />
                   </div>
@@ -66,18 +77,15 @@ export default function RoadmapPage() {
                     className="h-display mt-4 text-balance"
                     style={{ fontSize: "clamp(2rem, 4.5vw, 3.5rem)", lineHeight: 1.02 }}
                   >
-                    {act.title}
+                    {t(`roadmap.act${ai + 1}.title`, act.title)}
                   </h2>
                   <p className="mt-4 text-ink-soft text-[0.95rem] leading-relaxed max-w-sm">
-                    {act.subtitle}
+                    {t(`roadmap.act${ai + 1}.subtitle`, act.subtitle)}
                   </p>
-                  <p className="mt-6 label-num text-ink-faint tabular">
-                    M{String(act.from).padStart(2, "0")} - M{String(act.to).padStart(2, "0")} · {items.length} of 9
-                  </p>
+                  <p className="mt-6 label-num text-ink-faint tabular">{progress}</p>
                 </div>
               </Reveal>
 
-              {/* Milestone entries */}
               <ol className="md:col-span-8 divide-y divide-line border-y border-line">
                 {items.map((m, i) => (
                   <Reveal as="li" key={m.n} delay={i * 80}>
@@ -88,10 +96,10 @@ export default function RoadmapPage() {
                         </span>
                       </div>
                       <h3 className="md:col-span-4 h-display text-2xl md:text-3xl leading-tight text-balance">
-                        {m.title}
+                        {t(`milestones.${Number(m.n)}.title`, m.title)}
                       </h3>
                       <p className="md:col-span-6 text-base text-ink-soft leading-relaxed text-pretty">
-                        {m.body}
+                        {t(`milestones.${Number(m.n)}.body`, m.body)}
                       </p>
                     </div>
                   </Reveal>
@@ -105,8 +113,8 @@ export default function RoadmapPage() {
       <section className="border-t border-line bg-surface-elevated">
         <div className="mx-auto max-w-[88rem] px-5 md:px-10 py-20 md:py-28">
           <SectionTitle
-            kicker="100-day plan"
-            title="Six immediate actions to begin operating."
+            kicker={t("roadmap.hundredDay.kicker", "100-day plan")}
+            title={t("roadmap.hundredDay.title", "Six immediate actions to begin operating.")}
           />
           <div className="mt-12 grid md:grid-cols-2 lg:grid-cols-3 gap-5">
             {HUNDRED_DAY_PLAN.map((p, i) => (
@@ -116,9 +124,11 @@ export default function RoadmapPage() {
                     {p.n}
                   </span>
                   <h3 className="h-display text-xl mt-5 mb-3 leading-tight text-balance">
-                    {p.title}
+                    {t(`hundredDay.${Number(p.n)}.title`, p.title)}
                   </h3>
-                  <p className="text-sm text-ink-soft leading-relaxed">{p.body}</p>
+                  <p className="text-sm text-ink-soft leading-relaxed">
+                    {t(`hundredDay.${Number(p.n)}.body`, p.body)}
+                  </p>
                 </article>
               </Reveal>
             ))}
@@ -129,17 +139,17 @@ export default function RoadmapPage() {
       <section className="border-t border-line">
         <div className="mx-auto max-w-[88rem] px-5 md:px-10 py-20 md:py-28">
           <SectionTitle
-            kicker="Resourcing"
-            title="Five categories that fund the operation."
+            kicker={t("roadmap.resourcing.kicker", "Resourcing")}
+            title={t("roadmap.resourcing.title", "Five categories that fund the operation.")}
           />
           <dl className="mt-12 divide-y divide-line border-y border-line">
-            {RESOURCING.map((r) => (
+            {RESOURCING.map((r, i) => (
               <div key={r.title} className="py-6 grid md:grid-cols-12 gap-4 md:gap-8 items-baseline">
                 <dt className="md:col-span-4 h-display-italic text-2xl text-electric">
-                  {r.title}
+                  {t(`resourcing.${i + 1}.title`, r.title)}
                 </dt>
                 <dd className="md:col-span-8 text-base text-ink-soft leading-relaxed">
-                  {r.body}
+                  {t(`resourcing.${i + 1}.body`, r.body)}
                 </dd>
               </div>
             ))}
@@ -148,10 +158,13 @@ export default function RoadmapPage() {
       </section>
 
       <ClosingCta
-        title="Hear who shaped this roadmap."
-        body="The voices, frictions, and convictions of the clinicians, policy-makers, and community leaders who showed up to the workshop."
+        title={t("roadmap.cta.title", "Hear who shaped this roadmap.")}
+        body={t(
+          "roadmap.cta.body",
+          "The voices, frictions, and convictions of the clinicians, policy-makers, and community leaders who showed up to the workshop.",
+        )}
         href="/voices"
-        label="Voices from the workshop"
+        label={t("roadmap.cta.button", "Voices from the workshop")}
       />
     </main>
   );

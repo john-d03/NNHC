@@ -1,16 +1,19 @@
+"use client";
+
 import Link from "next/link";
 import { META, formatLabDate, PRINCIPLES, INSIGHTS } from "@/lib/content";
 import { Reveal } from "@/components/ui/Reveal";
 import { Counter } from "@/components/ui/Counter";
 import { StickyScroller } from "@/components/ui/StickyScroller";
+import { useT } from "@/lib/i18n";
 
 const SECTIONS = [
-  { n: "01", href: "/model", title: "Vision & Model", note: "A continuous fabric of care, organised around five stakeholder groups." },
-  { n: "02", href: "/mission", title: "Mission", note: "Five tracks that move vision into operation." },
-  { n: "03", href: "/roadmap", title: "Roadmap", note: "From convening to measurable population impact." },
-  { n: "04", href: "/voices", title: "Voices", note: "The people who showed up - and what they said." },
-  { n: "05", href: "/engage", title: "Engage", note: "Where you fit, and what to do next." },
-  { n: "06", href: "/about", title: "About", note: "Challenges, FAQ, and glossary." },
+  { n: "01", href: "/model", key: "section1", title: "Vision & Model", note: "A continuous fabric of care, organised around five stakeholder groups." },
+  { n: "02", href: "/mission", key: "section2", title: "Mission", note: "Five tracks that move vision into operation." },
+  { n: "03", href: "/roadmap", key: "section3", title: "Roadmap", note: "From convening to measurable population impact." },
+  { n: "04", href: "/voices", key: "section4", title: "Voices", note: "The people who showed up - and what they said." },
+  { n: "05", href: "/engage", key: "section5", title: "Engage", note: "Where you fit, and what to do next." },
+  { n: "06", href: "/about", key: "section6", title: "About", note: "Challenges, FAQ, and glossary." },
 ];
 
 const FRICTIONS = [
@@ -54,16 +57,18 @@ const TESTIMONIALS = [
 ];
 
 const STATS = [
-  { value: 30, suffix: "+", label: "Stakeholders convened" },
-  { value: 5, suffix: "", label: "Mission tracks" },
-  { value: 7, suffix: "", label: "Vision sections" },
-  { value: 1, suffix: "", label: "Neighbourhood at a time" },
+  { value: 30, suffix: "+", tKey: "home.hero.statStakeholders", label: "Stakeholders convened" },
+  { value: 5, suffix: "", tKey: "home.hero.statTracks", label: "Mission tracks" },
+  { value: 7, suffix: "", tKey: "home.hero.statSections", label: "Vision sections" },
+  { value: 1, suffix: "", tKey: "home.hero.statNeighbourhood", label: "Neighbourhood at a time" },
 ];
 
 export default function HomePage() {
+  const t = useT();
   const labDate = formatLabDate();
-  const heroLine1 = ["Care", "at", "home,"];
-  const heroLine2 = ["supported", "by", "your"];
+  const heroLine1 = t("home.hero.line1", "Care at home,").split(/\s+/);
+  const heroLine2 = t("home.hero.line2", "supported by your").split(/\s+/);
+  const heroItalic = t("home.hero.line2Italic", "neighbourhood.");
 
   return (
     <main id="main">
@@ -74,12 +79,12 @@ export default function HomePage() {
         <div className="relative mx-auto max-w-[88rem] px-5 md:px-10 pt-16 md:pt-28 pb-24 md:pb-36">
           <div className="flex items-center gap-3 mb-10 md:mb-14">
             <span className="notice-pill">
-              <span>Visioning Workshop</span>
+              <span>{t("meta.workshopLabel", "Visioning Workshop")}</span>
               <span className="sep" aria-hidden />
               <span className="tabular">{labDate}</span>
             </span>
             <span className="hidden md:inline label">
-              Convened by {META.convenedBy}
+              {t("footer.metaConvened", "Convened")} {t("meta.convenedBy", META.convenedBy)}
             </span>
           </div>
 
@@ -118,7 +123,7 @@ export default function HomePage() {
                   color: "var(--color-electric)",
                 }}
               >
-                neighbourhood.
+                {heroItalic}
               </span>
             </span>
           </h1>
@@ -126,19 +131,19 @@ export default function HomePage() {
           <Reveal delay={700} className="mt-12 md:mt-16">
             <div className="grid grid-cols-12 gap-6 md:gap-12 items-end">
               <p className="col-span-12 md:col-span-7 lede max-w-[52ch]">
-                The Neighbourhood Network in Health Care is a community-led, home-based
-                healthcare system. It empowers neighbourhoods, restores the{" "}
-                <span className="h-italic">family doctor</span>, and brings continuous
-                care to where people actually live.
+                {t(
+                  "home.hero.lede",
+                  "The Neighbourhood Network in Health Care is a community-led, home-based healthcare system. It empowers neighbourhoods, restores the family doctor, and brings continuous care to where people actually live.",
+                )}
               </p>
               <div className="col-span-12 md:col-span-5 md:flex md:justify-end">
                 <div className="flex flex-wrap gap-3">
                   <Link href="/model" className="btn btn-primary">
-                    Read the vision
+                    {t("home.hero.ctaPrimary", "Read the vision")}
                     <span className="btn-icon" aria-hidden>→</span>
                   </Link>
                   <Link href="/engage" className="btn btn-ghost">
-                    How to engage
+                    {t("home.hero.ctaSecondary", "How to engage")}
                   </Link>
                 </div>
               </div>
@@ -151,12 +156,12 @@ export default function HomePage() {
           <div className="border-t border-line">
             <div className="mx-auto max-w-[88rem] px-5 md:px-10 py-10 md:py-14 grid grid-cols-2 md:grid-cols-4 gap-8 md:gap-10">
               {STATS.map((s) => (
-                <div key={s.label}>
+                <div key={s.tKey}>
                   <div className="bignum text-5xl md:text-6xl">
                     <Counter to={s.value} suffix={s.suffix} />
                   </div>
                   <p className="mt-3 text-sm text-ink-soft leading-snug max-w-[20ch]">
-                    {s.label}
+                    {t(s.tKey, s.label)}
                   </p>
                 </div>
               ))}
@@ -171,29 +176,34 @@ export default function HomePage() {
           <Reveal>
             <div className="grid grid-cols-12 gap-6 md:gap-10 mb-16 md:mb-24 items-end">
               <div className="col-span-12 md:col-span-8">
-                <span className="label">The Problem</span>
+                <span className="label">{t("home.frictions.kicker", "The Problem")}</span>
                 <h2
                   id="frictions-title"
                   className="h-display mt-5"
                   style={{ fontSize: "clamp(2.4rem, 6vw, 5.2rem)" }}
                 >
-                  Your healthcare isn&rsquo;t broken.
+                  {t("home.frictions.titleLine1", "Your healthcare isn’t broken.")}
                   <br />
-                  It&rsquo;s broken{" "}
-                  <span className="h-italic" style={{ color: "var(--color-electric)" }}>
-                    apart
-                  </span>
-                  .
+                  {t("home.frictions.titleLine2", "It’s broken apart.")}
                 </h2>
               </div>
               <p className="col-span-12 md:col-span-4 lede max-w-[36ch]">
-                Five frictions came up in every room, across every stakeholder group.
-                We refuse to design around any of them.
+                {t(
+                  "home.frictions.lede",
+                  "Five frictions came up in every room, across every stakeholder group. We refuse to design around any of them.",
+                )}
               </p>
             </div>
           </Reveal>
 
-          <StickyScroller steps={FRICTIONS} />
+          <StickyScroller
+            steps={FRICTIONS.map((f, i) => ({
+              kicker: t(`home.frictions.${i + 1}.kicker`, f.kicker),
+              title: t(`home.frictions.${i + 1}.title`, f.title),
+              synopsis: t(`home.frictions.${i + 1}.synopsis`, f.synopsis),
+              body: t(`home.frictions.${i + 1}.body`, f.body),
+            }))}
+          />
         </div>
       </section>
 
@@ -202,23 +212,22 @@ export default function HomePage() {
         <div className="mx-auto max-w-[88rem] px-5 md:px-10 py-24 md:py-40">
           <Reveal>
             <div className="mb-16 md:mb-24">
-              <span className="label">Testimony</span>
+              <span className="label">{t("home.testimonies.kicker", "Testimony")}</span>
               <h2
                 id="testimonies-title"
                 className="h-display mt-5 max-w-[18ch]"
                 style={{ fontSize: "clamp(2.4rem, 6vw, 5.2rem)" }}
               >
-                Vision echoed by
+                {t("home.testimonies.titleLine1", "Vision echoed by")}
                 <br />
-                society{" "}
-                <span className="h-italic" style={{ color: "var(--color-electric)" }}>leaders</span>.
+                {t("home.testimonies.titleLine2", "society leaders.")}
               </h2>
             </div>
           </Reveal>
 
           <ul className="space-y-20 md:space-y-32">
-            {TESTIMONIALS.map((t, i) => (
-              <li key={t.name + i}>
+            {TESTIMONIALS.map((tm, i) => (
+              <li key={tm.name + i}>
                 <Reveal delay={i * 60}>
                   <figure className="grid grid-cols-12 gap-6 md:gap-12 items-start">
                     <figcaption className="col-span-12 md:col-span-3 order-2 md:order-1">
@@ -227,8 +236,8 @@ export default function HomePage() {
                           {String(i + 1).padStart(2, "0")}
                         </span>
                         <div>
-                          <p className="text-sm font-medium tracking-tight">{t.name}</p>
-                          <p className="text-xs text-ink-mute mt-0.5">{t.role}</p>
+                          <p className="text-sm font-medium tracking-tight">{tm.name}</p>
+                          <p className="text-xs text-ink-mute mt-0.5">{tm.role}</p>
                         </div>
                       </div>
                     </figcaption>
@@ -237,7 +246,7 @@ export default function HomePage() {
                       style={{ fontSize: "clamp(1.75rem, 4vw, 3.4rem)", lineHeight: 1.08 }}
                     >
                       <span style={{ color: "var(--color-electric)" }}>&ldquo;</span>
-                      {t.quote}
+                      {t(`home.testimonies.${i + 1}.quote`, tm.quote)}
                       <span style={{ color: "var(--color-electric)" }}>&rdquo;</span>
                     </blockquote>
                   </figure>
@@ -257,7 +266,7 @@ export default function HomePage() {
                       <span aria-hidden className="hidden md:block h-px w-8 bg-line-strong mt-3" />
                       <div>
                         <p className="text-sm font-medium tracking-tight text-ink-soft transition-colors group-hover:text-electric inline-flex items-center gap-2">
-                          See all voices
+                          {t("home.testimonies.seeAll", "See all voices")}
                           <span
                             aria-hidden
                             className="inline-block transition-transform group-hover:translate-x-1"
@@ -266,7 +275,7 @@ export default function HomePage() {
                           </span>
                         </p>
                         <p className="text-xs text-ink-mute mt-0.5">
-                          Filtered by group
+                          {t("home.testimonies.filteredBy", "Filtered by group")}
                         </p>
                       </div>
                     </div>
@@ -284,22 +293,22 @@ export default function HomePage() {
           <Reveal>
             <div className="grid grid-cols-12 gap-6 md:gap-10 mb-16 md:mb-24 items-end">
               <div className="col-span-12 md:col-span-8">
-                <span className="label">Principles</span>
+                <span className="label">{t("home.principles.kicker", "Principles")}</span>
                 <h2
                   id="principles-title"
                   className="h-display mt-5"
                   style={{ fontSize: "clamp(2.4rem, 6vw, 5.2rem)" }}
                 >
-                  Five things we{" "}
-                  <span className="h-italic" style={{ color: "var(--color-electric)" }}>
-                    refuse
-                  </span>{" "}
-                  to lose.
+                  {t("home.principles.titleLine1", "Five things we refuse")}
+                  <br />
+                  {t("home.principles.titleLine2", "to lose.")}
                 </h2>
               </div>
               <p className="col-span-12 md:col-span-4 lede max-w-[36ch]">
-                Every architectural decision the network makes is tested against these.
-                They are the floor - not the ceiling.
+                {t(
+                  "home.principles.lede",
+                  "Every architectural decision the network makes is tested against these. They are the floor - not the ceiling.",
+                )}
               </p>
             </div>
           </Reveal>
@@ -315,10 +324,10 @@ export default function HomePage() {
                     <span className="mark-x" aria-hidden>+</span>
                   </div>
                   <h3 className="text-lg md:text-xl font-medium tracking-tight leading-[1.2] text-balance">
-                    {p.title}
+                    {t(`principles.${i + 1}.title`, p.title)}
                   </h3>
                   <p className="text-[0.95rem] text-ink-soft leading-relaxed mt-auto">
-                    {p.body}
+                    {t(`principles.${i + 1}.body`, p.body)}
                   </p>
                 </article>
               </Reveal>
@@ -336,14 +345,13 @@ export default function HomePage() {
           <Reveal>
             <div className="grid grid-cols-12 gap-6 md:gap-10 mb-12 md:mb-16 items-end">
               <div className="col-span-12 md:col-span-8">
-                <span className="label">Front Matter</span>
+                <span className="label">{t("home.toc.kicker", "Front Matter")}</span>
                 <h2
                   id="contents-title"
                   className="h-display mt-5"
                   style={{ fontSize: "clamp(2.4rem, 6vw, 5.2rem)" }}
                 >
-                  Where would you like to{" "}
-                  <span className="h-italic">begin</span>?
+                  {t("home.toc.titlePrefix", "Where would you like to begin?")}
                 </h2>
               </div>
             </div>
@@ -361,10 +369,10 @@ export default function HomePage() {
                     className="text-3xl md:text-5xl font-medium tracking-tight leading-[1.05] min-w-0 transition-colors group-hover:text-electric"
                     style={{ letterSpacing: "-0.035em" }}
                   >
-                    {row.title}
+                    {t(`home.toc.${row.key}.title`, row.title)}
                   </span>
                   <span className="hidden md:block text-sm text-ink-soft leading-snug max-w-[36ch]">
-                    {row.note}
+                    {t(`home.toc.${row.key}.note`, row.note)}
                   </span>
                   <span
                     aria-hidden
@@ -385,37 +393,39 @@ export default function HomePage() {
           <Reveal>
             <div className="grid grid-cols-12 gap-6 md:gap-10 mb-16 items-end">
               <div className="col-span-12 md:col-span-8">
-                <span className="label">From the Workshop</span>
+                <span className="label">{t("home.insights.kicker", "From the Workshop")}</span>
                 <h2
                   id="insights-title"
                   className="h-display mt-5"
                   style={{ fontSize: "clamp(2.4rem, 6vw, 5.2rem)" }}
                 >
-                  Ten themes,
+                  {t("home.insights.titleLine1", "Ten themes,")}
                   <br />
-                  <span className="h-italic" style={{ color: "var(--color-electric)" }}>
-                    one room.
-                  </span>
+                  {t("home.insights.titleLine2", "one room.")}
                 </h2>
               </div>
               <p className="col-span-12 md:col-span-4 lede max-w-[34ch]">
-                Notes from the Visioning Workshop - patterns that recurred across clinicians,
-                policy-makers, technologists, and community leaders.
+                {t(
+                  "home.insights.lede",
+                  "Notes from the Visioning Workshop - patterns that recurred across clinicians, policy-makers, technologists, and community leaders.",
+                )}
               </p>
             </div>
           </Reveal>
           <ul className="grid grid-cols-1 md:grid-cols-2 gap-x-12 gap-y-0 border-t border-line">
-            {INSIGHTS.map((i, idx) => (
-              <Reveal as="li" key={i.title} delay={(idx % 2) * 80} className="grid grid-cols-[3rem_1fr] gap-5 py-7 md:py-9 border-b border-line group">
+            {INSIGHTS.map((insight, idx) => (
+              <Reveal as="li" key={insight.title} delay={(idx % 2) * 80} className="grid grid-cols-[3rem_1fr] gap-5 py-7 md:py-9 border-b border-line group">
                 <span className="label-num text-ink-faint pt-1 transition-colors duration-300 group-hover:text-electric">
                   {String(idx + 1).padStart(2, "0")}
                 </span>
                 <div>
-                  <span className="label">{i.tag}</span>
+                  <span className="label">{t(`insights.${idx + 1}.tag`, insight.tag)}</span>
                   <h3 className="text-lg md:text-xl font-medium tracking-tight mt-2 mb-2 leading-tight text-balance">
-                    {i.title}
+                    {t(`insights.${idx + 1}.title`, insight.title)}
                   </h3>
-                  <p className="text-[0.95rem] text-ink-soft leading-relaxed">{i.body}</p>
+                  <p className="text-[0.95rem] text-ink-soft leading-relaxed">
+                    {t(`insights.${idx + 1}.body`, insight.body)}
+                  </p>
                 </div>
               </Reveal>
             ))}
@@ -434,32 +444,34 @@ export default function HomePage() {
                     className="notice-pill notice-pill--electric"
                     style={{ background: "rgba(255,255,255,0.18)", borderColor: "transparent" }}
                   >
-                    Engage
+                    {t("home.engageCta.pillLabel", "Engage")}
                     <span className="sep" aria-hidden />
-                    <span>06 Pathways</span>
+                    <span>{t("home.engageCta.pillCount", "06 Pathways")}</span>
                   </span>
                   <h2
                     id="engage-title"
                     className="h-display mt-8"
                     style={{ fontSize: "clamp(2.6rem, 7vw, 6rem)", lineHeight: 0.96 }}
                   >
-                    Many roles.
+                    {t("home.engageCta.titleLine1", "Many roles.")}
                     <br />
-                    Many pathways.
+                    {t("home.engageCta.titleLine2", "Many pathways.")}
                     <br />
-                    <span className="h-italic">One network.</span>
+                    {t("home.engageCta.titleLine3", "One network.")}
                   </h2>
                   <p
                     className="mt-7 lede max-w-[48ch]"
                     style={{ color: "rgba(255,255,255,0.85)" }}
                   >
-                    Clinician, policy-maker, technologist, community organiser, or
-                    researcher - there is a clear way in.
+                    {t(
+                      "home.engageCta.lede",
+                      "Clinician, policy-maker, technologist, community organiser, or researcher - there is a clear way in.",
+                    )}
                   </p>
                 </div>
                 <div className="col-span-12 md:col-span-4 md:flex md:justify-end">
                   <Link href="/engage" className="btn btn-on-dark">
-                    Find your pathway
+                    {t("home.engageCta.button", "Find your pathway")}
                     <span className="btn-icon" aria-hidden>→</span>
                   </Link>
                 </div>

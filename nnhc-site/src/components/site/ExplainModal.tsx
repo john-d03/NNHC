@@ -1,6 +1,7 @@
 "use client";
 
 import { useCallback, useEffect, useRef, useState } from "react";
+import { useT } from "@/lib/i18n";
 
 /* ───────────── Content ─────────────
    Edit pages here. Keep each page short - one idea per slide.
@@ -57,6 +58,7 @@ export function ExplainModal({
   onClose: () => void;
   pages?: ExplainPage[];
 }) {
+  const t = useT();
   const [index, setIndex] = useState(0);
   const [direction, setDirection] = useState<1 | -1>(1);
   const dialogRef = useRef<HTMLDivElement | null>(null);
@@ -143,11 +145,11 @@ export function ExplainModal({
       >
         {/* Top bar */}
         <div className="explain-topbar">
-          <span className="label">Explain NNHC to me</span>
+          <span className="label">{t("explain.fabLabel", "Explain NNHC to me")}</span>
           <button
             type="button"
             className="explain-close"
-            aria-label="Close"
+            aria-label={t("explain.close", "Close")}
             onClick={onClose}
           >
             <svg
@@ -171,11 +173,11 @@ export function ExplainModal({
             className="explain-page"
             data-direction={direction === 1 ? "forward" : "back"}
           >
-            <span className="explain-kicker label">{page.kicker}</span>
+            <span className="explain-kicker label">{t(`explain.page${index + 1}.kicker`, page.kicker)}</span>
             <h2 id="explain-title" className="explain-title h-display">
-              {page.title}
+              {t(`explain.page${index + 1}.title`, page.title)}
             </h2>
-            <p className="explain-body lede">{page.body}</p>
+            <p className="explain-body lede">{t(`explain.page${index + 1}.body`, page.body)}</p>
           </article>
         </div>
 
@@ -202,10 +204,12 @@ export function ExplainModal({
               onClick={() => go(index - 1)}
               disabled={isFirst}
             >
-              ← Back
+              ← {t("explain.back", "Back")}
             </button>
             <span className="explain-count tabular">
-              {String(index + 1).padStart(2, "0")} / {String(total).padStart(2, "0")}
+              {t("explain.pageOf", "{current} / {total}")
+                .replace("{current}", String(index + 1).padStart(2, "0"))
+                .replace("{total}", String(total).padStart(2, "0"))}
             </span>
             {isLast ? (
               <button
@@ -213,7 +217,7 @@ export function ExplainModal({
                 className="explain-btn explain-btn--primary"
                 onClick={onClose}
               >
-                Close
+                {t("explain.close", "Close")}
               </button>
             ) : (
               <button
@@ -221,7 +225,7 @@ export function ExplainModal({
                 className="explain-btn explain-btn--primary"
                 onClick={() => go(index + 1)}
               >
-                Next →
+                {t("explain.next", "Next")} →
               </button>
             )}
           </div>

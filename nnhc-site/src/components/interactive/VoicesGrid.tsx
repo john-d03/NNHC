@@ -2,11 +2,22 @@
 
 import { useEffect, useMemo, useRef, useState } from "react";
 import { VOICES } from "@/lib/content";
+import { useT } from "@/lib/i18n";
 
 const GROUPS = ["All", "Policy", "Clinical", "Community", "Industry", "Tech"] as const;
 type Group = (typeof GROUPS)[number];
 
+const GROUP_KEYS: Record<Group, string> = {
+  All: "voices.filter.all",
+  Policy: "voices.filter.policy",
+  Clinical: "voices.filter.clinical",
+  Community: "voices.filter.community",
+  Industry: "voices.filter.industry",
+  Tech: "voices.filter.tech",
+};
+
 export function VoicesGrid() {
+  const t = useT();
   const [filter, setFilter] = useState<Group>("All");
   const sentinelRef = useRef<HTMLDivElement | null>(null);
   const userInteracted = useRef(false);
@@ -58,7 +69,7 @@ export function VoicesGrid() {
         role="radiogroup"
         aria-label="Filter voices by stakeholder group"
       >
-        <span className="text-xs font-medium text-ink-soft mr-2" aria-hidden>Filter</span>
+        <span className="text-xs font-medium text-ink-soft mr-2" aria-hidden>{t("voices.filterLabel", "Filter")}</span>
         {GROUPS.map((g) => (
           <button
             key={g}
@@ -68,7 +79,7 @@ export function VoicesGrid() {
             aria-checked={filter === g}
             className="chip"
           >
-            {g}
+            {t(GROUP_KEYS[g], g)}
           </button>
         ))}
         <span className="text-xs font-medium tabular text-ink-mute ml-auto" aria-hidden>
@@ -77,31 +88,36 @@ export function VoicesGrid() {
       </div>
 
       <p className="sr-only" aria-live="polite">
-        {visible.length} {visible.length === 1 ? "voice" : "voices"} shown
+        {visible.length === 1
+          ? t("voices.shownSingular", "{count} voice shown").replace("{count}", String(visible.length))
+          : t("voices.shownPlural", "{count} voices shown").replace("{count}", String(visible.length))}
       </p>
 
       <ul className="mt-10 grid md:grid-cols-2 lg:grid-cols-3 gap-5">
-        {visible.map((v) => (
+        {visible.map((v) => {
+          const idx = VOICES.indexOf(v) + 1;
+          return (
           <li
             key={v.name}
             id={`voice-${v.name.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/(^-|-$)/g, "")}`}
             className="voice-card card p-6 md:p-7 flex flex-col gap-5 min-h-[15rem] scroll-mt-24 group cursor-default"
           >
             <div className="flex items-center justify-between">
-              <span className="chip voice-chip">{v.group}</span>
+              <span className="chip voice-chip">{t(`voices.${idx}.group`, v.group)}</span>
               <span aria-hidden className="h-display-italic text-3xl leading-none -mt-1 voice-quote-mark">
                 “
               </span>
             </div>
             <p className="text-[1.05rem] md:text-[1.1rem] leading-[1.55] text-pretty voice-quote">
-              {v.quote}
+              {t(`voices.${idx}.quote`, v.quote)}
             </p>
             <div className="mt-auto pt-4 border-t border-line voice-meta">
-              <p className="text-sm font-medium">{v.name}</p>
-              <p className="text-xs text-ink-soft voice-role">{v.role}</p>
+              <p className="text-sm font-medium">{t(`voices.${idx}.name`, v.name)}</p>
+              <p className="text-xs text-ink-soft voice-role">{t(`voices.${idx}.role`, v.role)}</p>
             </div>
           </li>
-        ))}
+          );
+        })}
       </ul>
     </>
   );

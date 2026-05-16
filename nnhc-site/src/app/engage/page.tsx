@@ -1,23 +1,31 @@
+"use client";
+
 import { PageHeader } from "@/components/site/PageHeader";
 import { Reveal } from "@/components/site/Reveal";
 import { ContactCta } from "@/components/site/ContactCta";
 import { ContactInline } from "@/components/site/ContactInline";
 import { ENGAGE } from "@/lib/content";
-
-export const metadata = { title: "Engage" };
+import { useT } from "@/lib/i18n";
 
 export default function EngagePage() {
+  const t = useT();
   return (
     <main id="main">
       <PageHeader
-        kicker="6 pathways"
-        title="Where you fit,"
-        italicTail="and what to do next."
-        lede="Many roles, many pathways, one network. Each pathway below maps to one of the five Star Model groups."
+        kicker={t("engage.hero.kicker", "6 pathways")}
+        title={t("engage.hero.titlePrefix", "Where you fit,")}
+        italicTail={t("engage.hero.titleItalic", "and what to do next.")}
+        lede={t(
+          "engage.hero.lede",
+          "Many roles, many pathways, one network. Each pathway below maps to one of the five Star Model groups.",
+        )}
       />
 
       <section className="mx-auto max-w-[88rem] px-5 md:px-10 pt-4 md:pt-6 -mt-10 md:-mt-14">
-        <ContactInline prefix="Already know what you bring?" label="Contact us directly" />
+        <ContactInline
+          prefix={t("engage.inline.prefix", "Already know what you bring?")}
+          label={t("engage.inline.label", "Contact us directly")}
+        />
       </section>
 
       <section className="mx-auto max-w-[88rem] px-5 md:px-10 py-20 md:py-28">
@@ -26,23 +34,23 @@ export default function EngagePage() {
             <Reveal as="li" key={e.for} delay={i * 60}>
               <article className="card p-7 h-full flex flex-col group">
                 <div className="flex items-baseline justify-between mb-6">
-                  <span className="label">If you are</span>
+                  <span className="label">{t("engage.card.label", "If you are")}</span>
                   <span className="label-num text-ink-mute transition-colors duration-300 group-hover:text-electric">
                     {String(i + 1).padStart(2, "0")}
                   </span>
                 </div>
                 <h2 className="h-display text-3xl md:text-[2.25rem] leading-[1.05] text-balance">
-                  <span className="h-display-italic text-electric">{e.for}</span>
+                  <span className="h-display-italic text-electric">{t(`engage.${i + 1}.for`, e.for)}</span>
                 </h2>
                 <hr className="hr my-5" />
                 <ul className="space-y-3 mb-2">
-                  {e.actions.map((a) => (
+                  {e.actions.map((a, j) => (
                     <li
                       key={a}
                       className="flex gap-3 text-[0.92rem] text-ink-soft leading-relaxed"
                     >
                       <span aria-hidden className="text-electric mt-1.5">▸</span>
-                      <span>{a}</span>
+                      <span>{t(`engage.${i + 1}.action${j + 1}`, a)}</span>
                     </li>
                   ))}
                 </ul>
@@ -63,18 +71,19 @@ export default function EngagePage() {
         />
         <div className="relative mx-auto max-w-[88rem] px-5 md:px-10 py-20 md:py-28">
           <span className="label" style={{ color: "rgba(255,255,255,0.8)" }}>
-            Get in touch
+            {t("engage.cta.kicker", "Get in touch")}
           </span>
           <h2 className="h-display text-4xl md:text-7xl mt-4 max-w-4xl text-balance">
-            Bring your capability -{" "}
+            {t("engage.cta.titlePrefix", "Bring your capability -")}{" "}
             <span className="h-display-italic" style={{ color: "var(--color-electric-tint)" }}>
-              the network will route it.
+              {t("engage.cta.titleItalic", "the network will route it.")}
             </span>
           </h2>
           <p className="mt-6 max-w-2xl text-lg leading-snug" style={{ color: "rgba(255,255,255,0.88)" }}>
-            Reach IMA Cochin to begin a conversation. Specify which Star Model
-            group you align with, and what you can contribute - funds, people,
-            materials, software, or simply your block of homes.
+            {t(
+              "engage.cta.body",
+              "Reach IMA Cochin to begin a conversation. Specify which Star Model group you align with, and what you can contribute - funds, people, materials, software, or simply your block of homes.",
+            )}
           </p>
           <ContactCta />
         </div>

@@ -2,16 +2,17 @@
 
 import { useEffect, useRef, useState } from "react";
 import { META } from "@/lib/content";
+import { useT } from "@/lib/i18n";
 
-const ROLES = [
-  "Healthcare professional",
-  "Public-health system",
-  "Neighbour / community",
-  "Charity / NGO",
-  "Foundation / funder",
-  "Researcher",
-  "Technologist",
-  "Other",
+const ROLE_DEFS = [
+  { key: "contact.role.hcp", en: "Healthcare professional" },
+  { key: "contact.role.public", en: "Public-health system" },
+  { key: "contact.role.neighbour", en: "Neighbour / community" },
+  { key: "contact.role.charity", en: "Charity / NGO" },
+  { key: "contact.role.foundation", en: "Foundation / funder" },
+  { key: "contact.role.researcher", en: "Researcher" },
+  { key: "contact.role.tech", en: "Technologist" },
+  { key: "contact.role.other", en: "Other" },
 ];
 
 export function ContactModal({
@@ -21,6 +22,8 @@ export function ContactModal({
   open: boolean;
   onClose: () => void;
 }) {
+  const t = useT();
+  const ROLES = ROLE_DEFS.map((r) => t(r.key, r.en));
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [role, setRole] = useState(ROLES[0]);
@@ -160,17 +163,19 @@ export function ContactModal({
               className="h-display"
               style={{ fontSize: "clamp(1.75rem, 3.2vw, 2.4rem)", lineHeight: 1.05 }}
             >
-              Get in touch
+              {t("contact.title", "Get in touch")}
             </h2>
             <p className="text-sm text-ink-soft mt-2 max-w-[34ch]">
-              Tell us who you are and what you bring. We&rsquo;ll route it to the right
-              part of the network.
+              {t(
+                "contact.subtitle",
+                "Tell us who you are and what you bring. We\u2019ll route it to the right part of the network.",
+              )}
             </p>
           </div>
           <button
             type="button"
             onClick={onClose}
-            aria-label="Close"
+            aria-label={t("contact.closeAria", "Close")}
             className="text-ink-soft hover:text-ink transition-colors text-2xl leading-none -mt-1 -mr-1 p-2"
           >
             ×
@@ -180,23 +185,25 @@ export function ContactModal({
         {sent ? (
           <div className="p-6 md:p-8">
             <p className="lede">
-              Thanks - your message is on its way. We&rsquo;ll route it to the right
-              part of the network and reply to{" "}
-              <span className="text-ink">{email || "your email"}</span> shortly.
+              {t(
+                "contact.success",
+                "Thanks - your message is on its way. We\u2019ll route it to the right part of the network and reply to you shortly.",
+              )}{" "}
+              <span className="text-ink">{email}</span>
             </p>
             {refNum && (
               <div className="mt-5 rounded-lg border border-line bg-bg-soft px-4 py-3">
-                <span className="label block mb-1">Your reference</span>
+                <span className="label block mb-1">{t("contact.refLabel", "Your reference")}</span>
                 <code className="text-ink text-base font-mono tracking-tight select-all">
                   {refNum}
                 </code>
                 <p className="text-xs text-ink-mute mt-2">
-                  Quote this if you follow up by email.
+                  {t("contact.refHint", "Quote this if you follow up by email.")}
                 </p>
               </div>
             )}
             <p className="text-sm text-ink-soft mt-4">
-              Prefer email? Write to{" "}
+              {t("contact.emailPrefer", "Prefer email? Write to")}{" "}
               <a
                 href={`mailto:${META.contactEmail}`}
                 className="underline hover:text-electric"
@@ -210,7 +217,7 @@ export function ContactModal({
               onClick={onClose}
               className="btn btn-ghost mt-6"
             >
-              Close
+              {t("contact.successClose", "Close")}
             </button>
           </div>
         ) : (
@@ -232,7 +239,7 @@ export function ContactModal({
               }}
               aria-hidden="true"
             />
-            <Field label="Name" htmlFor="contact-name">
+            <Field label={t("contact.field.name", "Name")} htmlFor="contact-name">
               <input
                 ref={firstFieldRef}
                 id="contact-name"
@@ -244,7 +251,7 @@ export function ContactModal({
                 autoComplete="name"
               />
             </Field>
-            <Field label="Email" htmlFor="contact-email">
+            <Field label={t("contact.field.email", "Email")} htmlFor="contact-email">
               <input
                 id="contact-email"
                 type="email"
@@ -255,7 +262,7 @@ export function ContactModal({
                 autoComplete="email"
               />
             </Field>
-            <Field label="I am a" htmlFor="contact-role">
+            <Field label={t("contact.field.role", "I am a")} htmlFor="contact-role">
               <select
                 id="contact-role"
                 value={role}
@@ -269,7 +276,7 @@ export function ContactModal({
                 ))}
               </select>
             </Field>
-            <Field label="Message" htmlFor="contact-message">
+            <Field label={t("contact.field.message", "Message")} htmlFor="contact-message">
               <textarea
                 id="contact-message"
                 required
@@ -277,12 +284,15 @@ export function ContactModal({
                 value={message}
                 onChange={(e) => setMessage(e.target.value)}
                 className="input resize-y min-h-[7rem]"
-                placeholder="What you bring (funds, people, software, your block of homes…) and what you'd like to discuss."
+                placeholder={t(
+                  "contact.message.placeholder",
+                  "What you bring (funds, people, software, your block of homes\u2026) and what you'd like to discuss.",
+                )}
               />
             </Field>
             <div className="flex flex-wrap items-center justify-between gap-3 pt-2">
               <p className="text-xs text-ink-mute max-w-[28ch]">
-                We&rsquo;ll only use your details to reply.
+                {t("contact.privacy", "We\u2019ll only use your details to reply.")}
               </p>
               <div className="flex gap-3">
                 <button
@@ -291,14 +301,14 @@ export function ContactModal({
                   className="btn btn-ghost"
                   disabled={status === "sending"}
                 >
-                  Cancel
+                  {t("contact.cancel", "Cancel")}
                 </button>
                 <button
                   type="submit"
                   className="btn btn-primary"
                   disabled={status === "sending"}
                 >
-                  {status === "sending" ? "Sending…" : "Send message"}
+                  {status === "sending" ? t("contact.sending", "Sending\u2026") : t("contact.submit", "Send message")}
                   <span className="btn-icon" aria-hidden>
                     →
                   </span>
@@ -315,7 +325,7 @@ export function ContactModal({
                   href={`mailto:${META.contactEmail}`}
                   className="underline hover:text-electric"
                 >
-                  Email us instead
+                  {t("contact.error.fallback", "Email us instead")}
                 </a>
                 .
               </p>

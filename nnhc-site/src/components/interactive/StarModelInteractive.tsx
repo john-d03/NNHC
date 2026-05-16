@@ -2,6 +2,7 @@
 
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { STAKEHOLDERS, type StakeholderId } from "@/lib/content";
+import { useT } from "@/lib/i18n";
 
 /* ─────────────────────────────────────────────────────────────
    Layout - pentagon vertices around (300, 300) at radius 210.
@@ -90,6 +91,7 @@ function labelAnchor(id: StakeholderId): "start" | "middle" | "end" {
 const AUTO_INTERVAL = 4200;
 
 export function StarModelInteractive() {
+  const t = useT();
   const [selected, setSelected] = useState<StakeholderId>("hcp");
   const [auto, setAuto] = useState(true);
   const [reduced, setReduced] = useState(false);
@@ -353,7 +355,7 @@ export function StarModelInteractive() {
                   key={id}
                   role="button"
                   tabIndex={0}
-                  aria-label={`${s.label}. ${meta.tagline}`}
+                  aria-label={`${t(`stakeholders.${id}.label`, s.label)}. ${t(`stakeholders.${id}.tagline`, meta.tagline)}`}
                   aria-pressed={active}
                   onClick={() => select(id)}
                   onMouseEnter={() => select(id)}
@@ -430,7 +432,7 @@ export function StarModelInteractive() {
                     }}
                     className="constellation-label"
                   >
-                    {s.label.split(" ")[0]}
+                    {t(`stakeholders.${id}.label`, s.label).split(" ")[0]}
                   </text>
                 </g>
               );
@@ -448,19 +450,19 @@ export function StarModelInteractive() {
               {String(currentIndex + 1).padStart(2, "0")}
               <span className="text-ink-faint/60"> / 05</span>
             </span>
-            <span className="label">{current.group}</span>
+            <span className="label">{t(`stakeholders.${selected}.group`, current.group)}</span>
           </div>
 
           <p className="h-italic text-xl md:text-2xl text-ink-soft mb-2 leading-tight">
-            {currentMeta.tagline}
+            {t(`stakeholders.${selected}.tagline`, currentMeta.tagline)}
           </p>
 
           <h3 className="h-display text-2xl md:text-3xl mb-4 leading-[1.05] text-balance">
-            {current.label}
+            {t(`stakeholders.${selected}.label`, current.label)}
           </h3>
 
           <p className="text-[0.95rem] leading-relaxed text-ink-soft mb-6">
-            {current.body}
+            {t(`stakeholders.${selected}.body`, current.body)}
           </p>
 
           <div className="flex items-end gap-4 py-4 border-y border-line mb-5">
@@ -468,13 +470,15 @@ export function StarModelInteractive() {
               {currentMeta.metric}
             </span>
             <span className="text-xs text-ink-mute leading-snug pb-1.5 max-w-[10rem]">
-              {currentMeta.metricLabel}
+              {t(`stakeholders.${selected}.metricLabel`, currentMeta.metricLabel)}
             </span>
           </div>
 
           <div className="mb-6">
-            <span className="label block mb-2">Members</span>
-            <p className="text-sm text-ink-soft leading-relaxed">{current.members}</p>
+            <span className="label block mb-2">{t("star.membersLabel", "Members")}</span>
+            <p className="text-sm text-ink-soft leading-relaxed">
+              {t(`stakeholders.${selected}.members`, current.members)}
+            </p>
           </div>
 
           {/* Integrated controls */}

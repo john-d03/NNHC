@@ -4,10 +4,14 @@ import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import { TRACKS } from "@/lib/content";
 import { Reveal } from "@/components/site/Reveal";
+import { useT } from "@/lib/i18n";
 
 export function MissionTracks() {
+  const t = useT();
   const sectionRefs = useRef<(HTMLElement | null)[]>([]);
   const [active, setActive] = useState(0);
+
+  const trackTitle = (i: number) => t(`tracks.${i + 1}.title`, TRACKS[i].title);
 
   useEffect(() => {
     const els = sectionRefs.current.filter(Boolean) as HTMLElement[];
@@ -63,7 +67,7 @@ export function MissionTracks() {
                     className="text-sm font-medium leading-snug line-clamp-1 transition-colors"
                     style={{ color: isActive ? "var(--color-ink)" : "var(--color-ink-soft)" }}
                   >
-                    {trackShort(t.title)}
+                    {trackShort(trackTitle(i))}
                   </span>
                 </button>
                 <span
@@ -100,7 +104,7 @@ export function MissionTracks() {
                     borderColor: isActive ? "var(--color-electric)" : "var(--color-line-strong)",
                   }}
                 >
-                  {trackShort(t.title)}
+                  {trackShort(trackTitle(i))}
                 </button>
               </li>
             );
@@ -110,22 +114,22 @@ export function MissionTracks() {
 
       {/* Track sections */}
       <div className="mx-auto max-w-[88rem] px-5 md:px-10">
-        {TRACKS.map((t, i) => (
+        {TRACKS.map((track, i) => (
           <section
-            key={t.n}
-            id={`track-${t.n}`}
+            key={track.n}
+            id={`track-${track.n}`}
             ref={(el) => {
               sectionRefs.current[i] = el;
             }}
             data-idx={i}
             className="track-section py-20 md:py-28 border-b border-line last:border-b-0 group/track"
-            aria-labelledby={`track-${t.n}-title`}
+            aria-labelledby={`track-${track.n}-title`}
           >
             <div className="grid md:grid-cols-12 gap-8 md:gap-12">
               {/* Left: meta */}
               <Reveal as="div" className="md:col-span-4">
                 <div className="md:sticky md:top-44">
-                  <span className="label block text-electric">Track</span>
+                  <span className="label block text-electric">{t("mission.tracks.railLabel", "Track")}</span>
                   <p className="mt-2 text-xs text-ink-faint tabular transition-colors duration-300 group-hover/track:text-electric">
                     <span className="text-ink transition-colors duration-300 group-hover/track:text-electric">
                       {String(i + 1).padStart(2, "0")}
@@ -138,15 +142,15 @@ export function MissionTracks() {
               <div className="md:col-span-8">
                 <Reveal delay={80}>
                   <h2
-                    id={`track-${t.n}-title`}
+                    id={`track-${track.n}-title`}
                     className="h-display text-balance"
                     style={{ fontSize: "clamp(1.75rem, 4vw, 3.25rem)", lineHeight: 1.05 }}
                   >
-                    {t.title}
+                    {t(`tracks.${i + 1}.title`, track.title)}
                   </h2>
                 </Reveal>
                 <Reveal delay={160}>
-                  <p className="mt-6 lede max-w-[52ch]">{t.summary}</p>
+                  <p className="mt-6 lede max-w-[52ch]">{t(`tracks.${i + 1}.summary`, track.summary)}</p>
                 </Reveal>
 
                 <div className="mt-10 grid md:grid-cols-12 gap-6 md:gap-8">
@@ -161,16 +165,16 @@ export function MissionTracks() {
                             "radial-gradient(ellipse 100% 70% at 0% 0%, rgba(20,184,166,0.08), transparent 60%)",
                         }}
                       />
-                      <span className="label text-electric relative">Key output</span>
+                      <span className="label text-electric relative">{t("mission.tracks.keyOutput", "Key output")}</span>
                       <p className="mt-3 text-[0.95rem] leading-relaxed text-ink relative">
-                        {t.output}
+                        {t(`tracks.${i + 1}.output`, track.output)}
                       </p>
                     </aside>
                   </Reveal>
 
                   {/* Points */}
                   <ul className="md:col-span-7 grid gap-3">
-                    {t.points.map((p, j) => (
+                    {track.points.map((p, j) => (
                       <Reveal
                         as="li"
                         key={p}
@@ -179,7 +183,7 @@ export function MissionTracks() {
                       >
                         <span aria-hidden className="text-electric mt-1.5 shrink-0">▸</span>
                         <span className="text-[0.95rem] leading-relaxed text-ink-soft">
-                          {p}
+                          {t(`tracks.${i + 1}.point${j + 1}`, p)}
                         </span>
                       </Reveal>
                     ))}
@@ -196,7 +200,7 @@ export function MissionTracks() {
                         onClick={() => goTo(i + 1)}
                         className="text-xs uppercase tracking-[0.18em] hover:text-electric transition-colors"
                       >
-                        Continue to {trackShort(TRACKS[i + 1].title)} ↓
+                        {t("mission.tracks.continueTo", "Continue to {next} ↓").replace("{next}", trackShort(trackTitle(i + 1)))}
                       </button>
                       <span aria-hidden className="h-px w-12 bg-line" />
                     </div>
@@ -220,21 +224,23 @@ export function MissionTracks() {
             }}
           />
           <div className="md:col-span-7 relative">
-            <span className="label text-electric">What comes next</span>
+            <span className="label text-electric">{t("mission.cta.kicker", "What comes next")}</span>
             <h3
               className="h-display mt-3 text-balance"
               style={{ fontSize: "clamp(1.5rem, 3.5vw, 2.5rem)", lineHeight: 1.1 }}
             >
-              The five tracks compile into a roadmap.
+              {t("mission.cta.title", "The five tracks compile into a roadmap.")}
             </h3>
             <p className="mt-4 lede max-w-[48ch]">
-              Each track produces an output. Each output unlocks the next milestone.
-              Read the sequence and the measures we'll be held to.
+              {t(
+                "mission.cta.body",
+                "Each track produces an output. Each output unlocks the next milestone. Read the sequence and the measures we'll be held to.",
+              )}
             </p>
           </div>
           <div className="md:col-span-5 relative md:text-right">
             <Link href="/roadmap" className="btn btn-primary">
-              Roadmap and milestones <span aria-hidden>→</span>
+              {t("mission.cta.button", "Roadmap and milestones")} <span aria-hidden>→</span>
             </Link>
           </div>
         </div>

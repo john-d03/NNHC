@@ -1,10 +1,14 @@
+"use client";
+
 import Link from "next/link";
 import { META, formatLabDate } from "@/lib/content";
 import { FooterContactButton } from "@/components/site/FooterContactButton";
+import { useT } from "@/lib/i18n";
 
 export function SiteFooter() {
   const year = new Date().getFullYear();
   const labDate = formatLabDate();
+  const t = useT();
   return (
     <footer className="mt-auto border-t border-line bg-bg">
       <div className="mx-auto max-w-[88rem] px-5 md:px-10 pt-20 md:pt-28 pb-12">
@@ -24,20 +28,19 @@ export function SiteFooter() {
                 }}
               />
             </Link>
-            <span className="label block mt-8">Colophon</span>
+            <span className="label block mt-8">{t("footer.colophon", "Colophon")}</span>
             <h2
               className="h-display text-balance mt-5"
               style={{ fontSize: "clamp(2rem, 4.6vw, 3.6rem)", lineHeight: 1 }}
             >
-              A foundational step toward a{" "}
-              <span className="h-italic" style={{ color: "var(--color-electric)" }}>
-                community-driven
-              </span>{" "}
-              healthcare system.
+              {t(
+                "footer.tagline",
+                "A foundational step toward a community-driven healthcare system.",
+              )}
             </h2>
             <div className="mt-8 flex flex-wrap items-center gap-3">
               <Link href="/engage" className="btn btn-primary">
-                Engage with NNHC
+                {t("nav.engageCta", "Engage with NNHC")}
                 <span className="btn-icon" aria-hidden>→</span>
               </Link>
               <FooterContactButton />
@@ -45,21 +48,21 @@ export function SiteFooter() {
           </div>
 
           <div className="md:col-span-5 grid grid-cols-2 gap-x-8 gap-y-8 md:pl-10 md:border-l md:border-line">
-            <FooterCol title="Sections" links={[
-              { href: "/model", label: "Vision & Model" },
-              { href: "/mission", label: "Mission" },
-              { href: "/roadmap", label: "Roadmap" },
+            <FooterCol title={t("footer.sectionsHeading", "Sections")} links={[
+              { href: "/model", label: t("nav.model", "Vision & Model") },
+              { href: "/mission", label: t("nav.mission", "Mission") },
+              { href: "/roadmap", label: t("nav.roadmap", "Roadmap") },
             ]} />
-            <FooterCol title="More" links={[
-              { href: "/voices", label: "Voices" },
-              { href: "/engage", label: "Engage" },
-              { href: "/about", label: "About + FAQ" },
+            <FooterCol title={t("footer.moreHeading", "More")} links={[
+              { href: "/voices", label: t("nav.voices", "Voices") },
+              { href: "/engage", label: t("nav.engage", "Engage") },
+              { href: "/about", label: t("footer.aboutFaq", "About + FAQ") },
             ]} />
             <dl className="col-span-2 mt-2 grid grid-cols-2 gap-y-5 border-t border-line pt-6">
-              <Meta label="Convened" value={META.convenedBy} />
-              <Meta label="Workshop" value={labDate} />
-              <Meta label="Venue" value={META.venue} />
-              <Meta label="Document" value={`v${META.version}`} />
+              <Meta label={t("footer.metaConvened", "Convened")} value={t("meta.convenedBy", META.convenedBy)} />
+              <Meta label={t("footer.metaWorkshop", "Workshop")} value={labDate} />
+              <Meta label={t("footer.metaVenue", "Venue")} value={t("meta.venue", META.venue)} />
+              <Meta label={t("footer.metaDocument", "Document")} value={`v${META.version}`} />
             </dl>
           </div>
         </div>
@@ -68,9 +71,16 @@ export function SiteFooter() {
 
         <div className="flex flex-col md:flex-row gap-3 md:items-center md:justify-between mt-6 text-xs text-ink-mute">
           <p>
-            © {year} <span translate="no">NNHC</span> · One Health initiative · Maintained by IMA Cochin.
+            {t(
+              "footer.copyright",
+              `© ${year} NNHC · One Health initiative · Maintained by IMA Cochin.`,
+            )
+              .replace("{year}", String(year))
+              .replace("{വർഷം}", String(year))}
           </p>
-          <p className="font-medium tabular">VISIONING WORKSHOP · {labDate}</p>
+          <p className="font-medium tabular">
+            {t("footer.workshopLine", `VISIONING WORKSHOP · ${labDate}`).replace("{date}", labDate)}
+          </p>
         </div>
       </div>
     </footer>

@@ -5,6 +5,7 @@ import { SiteNav } from "@/components/site/SiteNav";
 import { SiteFooter } from "@/components/site/SiteFooter";
 import { SimplifyButton } from "@/components/site/SimplifyButton";
 import { ContactProvider } from "@/components/site/ContactProvider";
+import { LanguageProvider } from "@/lib/i18n";
 
 const geist = Geist({
   variable: "--font-geist",
@@ -50,12 +51,14 @@ export default function RootLayout({
     <html lang="en" data-scroll-behavior="smooth" className={`${geist.variable} ${geistMono.variable} ${instrument.variable}`}>
       <body className="min-h-dvh flex flex-col">
         <a href="#main" className="skip-link">Skip to content</a>
-        <ContactProvider>
-          <SiteNav />
-          {children}
-          <SiteFooter />
-          <SimplifyButton />
-        </ContactProvider>
+        <LanguageProvider>
+          <ContactProvider>
+            <SiteNav />
+            {children}
+            <SiteFooter />
+            <SimplifyButton />
+          </ContactProvider>
+        </LanguageProvider>
       </body>
     </html>
   );

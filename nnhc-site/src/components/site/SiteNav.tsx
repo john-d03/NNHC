@@ -4,19 +4,22 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
 import { useContact } from "@/components/site/ContactProvider";
+import { LanguageSwitcher } from "@/components/site/LanguageSwitcher";
+import { useT } from "@/lib/i18n";
 
 const ROUTES = [
-  { href: "/model", label: "Vision & Model" },
-  { href: "/mission", label: "Mission" },
-  { href: "/roadmap", label: "Roadmap" },
-  { href: "/voices", label: "Voices" },
-  { href: "/engage", label: "Engage" },
-  { href: "/about", label: "About" },
+  { href: "/model", key: "nav.model", label: "Vision & Model" },
+  { href: "/mission", key: "nav.mission", label: "Mission" },
+  { href: "/roadmap", key: "nav.roadmap", label: "Roadmap" },
+  { href: "/voices", key: "nav.voices", label: "Voices" },
+  { href: "/engage", key: "nav.engage", label: "Engage" },
+  { href: "/about", key: "nav.about", label: "About" },
 ];
 
 export function SiteNav() {
   const pathname = usePathname();
   const { open: openContact } = useContact();
+  const t = useT();
   const [open, setOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const navRef = useRef<HTMLDivElement | null>(null);
@@ -120,7 +123,7 @@ export function SiteNav() {
             }}
           />
           <span className="hidden lg:inline text-[0.78rem] text-ink-mute">
-            Neighbourhood Network in Health Care
+            {t("nav.brandSubtitle", "Neighbourhood Network in Health Care")}
           </span>
         </Link>
 
@@ -158,26 +161,27 @@ export function SiteNav() {
                   active ? "text-ink" : "text-ink-mute hover:text-ink"
                 }`}
               >
-                {r.label}
+                {t(r.key, r.label)}
               </Link>
             );
           })}
         </nav>
 
-        <div className="hidden md:flex items-center gap-2">
+        <div className="hidden md:flex items-center gap-3">
+          <LanguageSwitcher />
           <button
             type="button"
             onClick={openContact}
             className="btn btn-primary"
           >
-            Contact
+            {t("nav.contact", "Contact")}
             <span className="btn-icon" aria-hidden>→</span>
           </button>
         </div>
 
         <button
           type="button"
-          aria-label={open ? "Close menu" : "Open menu"}
+          aria-label={open ? t("nav.closeMenu", "Close menu") : t("nav.openMenu", "Open menu")}
           aria-expanded={open}
           aria-controls="mobile-menu"
           className="md:hidden -mr-2 p-2"
@@ -239,7 +243,7 @@ export function SiteNav() {
                   className="text-3xl tracking-tight font-medium"
                   style={{ letterSpacing: "-0.035em" }}
                 >
-                  {r.label}
+                  {t(r.key, r.label)}
                 </span>
               </Link>
             );
@@ -248,7 +252,7 @@ export function SiteNav() {
             href="/engage"
             className="btn btn-primary justify-center mt-8 self-start"
           >
-            Engage with NNHC
+            {t("nav.engageCta", "Engage with NNHC")}
             <span className="btn-icon" aria-hidden>→</span>
           </Link>
           <button
@@ -259,8 +263,12 @@ export function SiteNav() {
             }}
             className="btn btn-ghost justify-center mt-3 self-start"
           >
-            Contact us
+            {t("nav.contactUs", "Contact us")}
           </button>
+          <div className="mt-8 pt-6 border-t border-line">
+            <p className="label mb-3">{t("nav.language", "Language")}</p>
+            <LanguageSwitcher size="md" />
+          </div>
         </nav>
       </div>
     </header>

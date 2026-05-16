@@ -2,8 +2,10 @@
 
 import { useState } from "react";
 import { FAQS } from "@/lib/content";
+import { useT } from "@/lib/i18n";
 
 export function FaqList() {
+  const t = useT();
   const [open, setOpen] = useState<number>(-1);
 
   return (
@@ -20,7 +22,7 @@ export function FaqList() {
               className="w-full text-left py-6 grid grid-cols-[1fr_auto] gap-6 items-baseline"
             >
               <h3 className="h-display text-xl md:text-2xl leading-tight text-balance">
-                {f.q}
+                {t(`faqs.${i + 1}.q`, f.q)}
               </h3>
               <span
                 aria-hidden
@@ -44,7 +46,7 @@ export function FaqList() {
             >
               <div className="overflow-hidden">
                 <p className="pb-7 max-w-3xl text-base text-ink-soft leading-relaxed text-pretty">
-                  {f.a}
+                  {t(`faqs.${i + 1}.a`, f.a)}
                 </p>
               </div>
             </div>
